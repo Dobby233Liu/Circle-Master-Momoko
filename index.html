@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Circle M@ster Momoko</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome (latest) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            touch-action: none; /* Prevent scrolling */
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #ffeec2; 
+            /* Background Pattern */
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.6'%3E%3Cpath d='M10 10h10v10H10z'/%3E%3Ccircle cx='40' cy='40' r='5'/%3E%3Cpath d='M40 10l5 10h-10z'/%3E%3Cpath d='M10 40h10v10H10z'/%3E%3Cpath d='M25 50l5 10h-10z'/%3E%3Ccircle cx='50' cy='20' r='3'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-size: 120px 120px;
+            overflow: hidden; /* Prevent body scroll completely */
+        }
+        
+        /* Canvas Styling */
+        #canvas-container {
+            position: relative;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 1.5rem;
+            cursor: crosshair;
+            transition: all 0.2s ease-out;
+            /* Ensure it doesn't overflow */
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        #result-overlay {
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(8px);
+            border-radius: 0 0 1.5rem 1.5rem; /* Match canvas bottom rounded corners */
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translate(-50%, 100%); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+        .animate-slide-up {
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .momoko-color { color: #EFB864; }
+        .momoko-bg { background-color: #EFB864; }
+        
+        .confetti {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background-color: #f00;
+            animation: fall linear forwards;
+            z-index: 100;
+            pointer-events: none;
+        }
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(720deg); }
+        }
+    </style>
+</head>
+<!-- Use h-dvh (dynamic viewport height) for better mobile support -->
+<body class="h-[100dvh] w-screen flex flex-col items-center py-2 select-none">
+
+    <!-- Compact Header -->
+    <div id="header-area" class="text-center z-10 flex flex-col items-center justify-center shrink-0 w-full px-4 mb-2">
+        <h1 class="text-2xl md:text-4xl lg:text-5xl font-bold momoko-color drop-shadow-sm flex items-center justify-center gap-2 bg-white/80 px-6 py-2 rounded-full backdrop-blur-sm shadow-sm">
+            <i class="fa-solid fa-shapes text-orange-400"></i>
+            <span>Circle M@ster</span>
+        </h1>
+        <div class="flex items-center gap-4 mt-2">
+            <p class="text-gray-500 text-xs md:text-sm bg-white/60 px-3 py-1 rounded-md font-bold">
+                トゲトゲなさんかくを、まあるくしてね。
+            </p>
+            <!-- Guide Button moved here to save vertical space -->
+            <button id="guide-toggle" onclick="toggleGuide()" class="bg-white text-gray-500 border border-gray-200 px-3 py-1 rounded-full text-xs md:text-sm font-bold shadow-sm hover:bg-orange-50 transition-colors flex items-center gap-2 active:scale-95">
+                <i class="fa-regular fa-circle"></i>
+                <span>ガイド: OFF</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Game Area (Auto-expanding) -->
+    <div id="game-area" class="relative flex-grow flex items-center justify-center w-full px-2 overflow-hidden">
+        <div id="canvas-container">
+            <canvas id="gameCanvas"></canvas>
+            
+            <!-- Result Overlay -->
+            <div id="result-overlay" class="hidden absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full border-t border-orange-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] pb-6 pt-6 px-4 flex flex-col items-center justify-center gap-4 z-20">
+                
+                <!-- Score Row -->
+                <div class="flex items-center justify-center gap-4 w-full">
+                    <div class="flex flex-col items-center min-w-[100px]">
+                        <span class="text-gray-400 text-xs uppercase tracking-widest font-bold">Score</span>
+                        <span id="score" class="text-5xl font-black momoko-color leading-none">0%</span>
+                    </div>
+                    
+                    <div class="h-12 w-1 bg-orange-200 rounded-full"></div> 
+
+                    <div class="flex flex-col items-start justify-center flex-grow">
+                         <div id="message" class="text-gray-600 font-bold leading-tight w-full text-left text-lg"></div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex w-full gap-3">
+                    <!-- Twitter Button (Fixed Icon) -->
+                    <button onclick="shareTwitter()" class="flex-1 bg-black text-white px-4 py-3 rounded-full font-bold hover:opacity-80 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
+                        <!-- Used standard fa-twitter (bird) for guaranteed visibility -->
+                        <i class="fa-brands fa-twitter text-xl text-white"></i>
+                        <span>Post</span>
+                    </button>
+                    
+                    <!-- Retry Button -->
+                    <button onclick="resetGame()" class="flex-[2] momoko-bg text-white px-4 py-3 rounded-full font-bold hover:opacity-90 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rotate-right text-xl"></i>
+                        <span>もう一回</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Minimal Footer Guide -->
+    <div id="footer-area" class="mt-2 text-gray-400 text-xs md:text-sm text-center bg-white/60 px-6 py-1 rounded-full backdrop-blur-sm font-bold z-10 shrink-0">
+        <i class="fa-solid fa-computer-mouse mr-1"></i>マウス / <i class="fa-solid fa-fingerprint mx-1"></i>指で描いてね
+    </div>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const container = document.getElementById('canvas-container');
+    const ctx = canvas.getContext('2d');
+    const resultOverlay = document.getElementById('result-overlay');
+    const scoreDiv = document.getElementById('score');
+    const messageDiv = document.getElementById('message');
+    const guideBtn = document.getElementById('guide-toggle');
+
+    let isDrawing = false;
+    let points = [];
+    let canvasSize = 0;
+    let isGuideMode = false;
+    let currentScore = 0;
+    let currentMessage = "";
+    
+    // Dynamic styles based on size
+    let lineWidthUser = 12;
+    let lineWidthGuide = 24;
+    const THICKNESS_RATIO = 0.10; 
+
+    function init() {
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Mouse
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', endDrawing);
+        canvas.addEventListener('mouseleave', () => { if (isDrawing) endDrawing(); });
+
+        // Touch
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startDrawing(e);
+        }, { passive: false });
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            draw(e);
+        }, { passive: false });
+        canvas.addEventListener('touchend', endDrawing);
+    }
+
+    function toggleGuide() {
+        isGuideMode = !isGuideMode;
+        if (isGuideMode) {
+            guideBtn.innerHTML = '<i class="fa-solid fa-check-circle text-orange-500"></i><span class="text-orange-500">ガイド: ON</span>';
+            guideBtn.classList.add('border-orange-200', 'bg-orange-50');
+        } else {
+            guideBtn.innerHTML = '<i class="fa-regular fa-circle"></i><span>ガイド: OFF</span>';
+            guideBtn.classList.remove('border-orange-200', 'bg-orange-50');
+        }
+        resetGame();
+    }
+
+    function resizeCanvas() {
+        const gameArea = document.getElementById('game-area');
+        const header = document.getElementById('header-area');
+        const footer = document.getElementById('footer-area');
+        
+        // Calculate available space
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+        
+        // Subtract vertical UI elements + padding (approx 16px buffer)
+        const uiHeight = header.offsetHeight + footer.offsetHeight + 24;
+        const availableHeight = windowHeight - uiHeight;
+        
+        // Determine the maximum possible square size
+        // We allow it to go much larger now (up to 800px or 95% of screen)
+        const maxDimension = Math.min(windowWidth - 24, availableHeight);
+        
+        // Clamp min size
+        canvasSize = Math.max(300, maxDimension);
+        
+        // Update styling params
+        // Adjusted: Made the lines thinner relative to canvas size for a cleaner look
+        lineWidthUser = Math.max(6, canvasSize * 0.02); 
+        lineWidthGuide = lineWidthUser * 2;
+
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = canvasSize * dpr;
+        canvas.height = canvasSize * dpr;
+        
+        // Set style dimensions
+        canvas.style.width = `${canvasSize}px`;
+        canvas.style.height = `${canvasSize}px`;
+        container.style.width = `${canvasSize}px`;
+        container.style.height = `${canvasSize}px`;
+
+        ctx.scale(dpr, dpr);
+        
+        if (!isDrawing) {
+            drawHint();
+        }
+    }
+
+    function drawHint() {
+        ctx.clearRect(0, 0, canvasSize, canvasSize); // Clear before drawing hint
+
+        if (isGuideMode) {
+            ctx.beginPath();
+            ctx.strokeStyle = '#FED7AA'; 
+            ctx.lineWidth = lineWidthGuide; 
+            ctx.setLineDash([]); 
+            ctx.arc(canvasSize/2, canvasSize/2, canvasSize/3, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // Removed center square hint
+        } else {
+            // Removed center square hint
+        }
+    }
+
+    function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    function startDrawing(e) {
+        if (!resultOverlay.classList.contains('hidden')) resetGame();
+        isDrawing = true;
+        points = [];
+        resultOverlay.classList.add('hidden');
+        resultOverlay.classList.remove('animate-slide-up');
+        ctx.clearRect(0, 0, canvasSize, canvasSize);
+        drawHint(); 
+        
+        const pos = getPos(e);
+        points.push(pos);
+        
+        ctx.beginPath();
+        ctx.strokeStyle = '#EFB864'; 
+        ctx.lineWidth = lineWidthUser;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.moveTo(pos.x, pos.y);
+    }
+
+    function draw(e) {
+        if (!isDrawing) return;
+        const pos = getPos(e);
+        points.push(pos);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+    }
+
+    function endDrawing() {
+        if (!isDrawing) return;
+        isDrawing = false;
+        if (points.length < 20) return;
+        evaluateCircle();
+    }
+
+    function evaluateCircle() {
+        let sumX = 0, sumY = 0;
+        points.forEach(p => { sumX += p.x; sumY += p.y; });
+        const centerX = sumX / points.length;
+        const centerY = sumY / points.length;
+
+        const distances = points.map(p => Math.sqrt((p.x - centerX) ** 2 + (p.y - centerY) ** 2));
+        const avgRadius = distances.reduce((a, b) => a + b, 0) / distances.length;
+
+        const safeZoneHalfWidth = avgRadius * (THICKNESS_RATIO / 2); 
+        
+        let errorSum = 0;
+        distances.forEach(d => {
+            const diff = Math.abs(d - avgRadius);
+            const adjustedDiff = Math.max(0, diff - safeZoneHalfWidth);
+            errorSum += adjustedDiff;
+        });
+        
+        const errorRate = errorSum / distances.length / avgRadius;
+
+        const start = points[0];
+        const end = points[points.length - 1];
+        const gap = Math.sqrt((start.x - end.x) ** 2 + (start.y - end.y) ** 2);
+        const adjustedGap = Math.max(0, gap - (avgRadius * THICKNESS_RATIO));
+        const gapPenalty = (adjustedGap / avgRadius) * 0.1; 
+
+        let rawScore = 100 - (errorRate * 250 + gapPenalty * 100); 
+        let score = Math.round(rawScore);
+        score = Math.max(0, Math.min(105, score));
+        
+        if (score > 100) score = 100;
+
+        showResult(score, centerX, centerY, avgRadius);
+    }
+
+    function showResult(score, cx, cy, r) {
+        currentScore = score;
+        
+        ctx.clearRect(0, 0, canvasSize, canvasSize);
+
+        if (isGuideMode) {
+             ctx.save();
+             ctx.beginPath();
+             ctx.strokeStyle = '#FFF7ED'; 
+             ctx.lineWidth = lineWidthGuide; 
+             ctx.arc(canvasSize/2, canvasSize/2, canvasSize/3, 0, Math.PI * 2);
+             ctx.stroke();
+             ctx.restore();
+        }
+
+        const visualThickness = r * THICKNESS_RATIO;
+
+        ctx.save();
+        
+        // 1. Ideal "Thick" Circle
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(239, 184, 100, 0.4)'; 
+        ctx.lineWidth = visualThickness; 
+        ctx.stroke();
+
+        // 2. XOR with User's Drawing
+        ctx.globalCompositeOperation = 'xor';
+
+        ctx.beginPath();
+        if (points.length > 0) {
+            ctx.moveTo(points[0].x, points[0].y);
+            for (let i = 1; i < points.length; i++) {
+                ctx.lineTo(points[i].x, points[i].y);
+            }
+        }
+        ctx.strokeStyle = 'rgba(239, 184, 100, 0.4)';
+        ctx.lineWidth = visualThickness; 
+        ctx.stroke();
+
+        ctx.restore();
+        
+        // --- OUTLINE LAYER ---
+        ctx.beginPath();
+        ctx.strokeStyle = '#F8A5C2'; 
+        ctx.lineWidth = lineWidthUser * 0.4;
+        ctx.setLineDash([lineWidthUser, lineWidthUser]);
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.beginPath();
+        ctx.strokeStyle = '#555';
+        ctx.lineWidth = lineWidthUser * 0.6;
+        if (points.length > 0) {
+            ctx.moveTo(points[0].x, points[0].y);
+            for (let i = 1; i < points.length; i++) {
+                ctx.lineTo(points[i].x, points[i].y);
+            }
+        }
+        ctx.stroke();
+
+        // Update Text
+        scoreDiv.innerText = score + "%";
+        
+        let msg = "";
+        let colorClass = "text-gray-600";
+        
+        const msgs100 = [
+            "完璧！桃子のプロデューサーなら当然だね♪",
+            "すごーい！お兄ちゃん、やる時はやるんだね！",
+            "満点かぁ…へえ、お兄ちゃんのこと、見直したよ。",
+            "これが桃子のプロデュースの実力…なんてね、お兄ちゃんのおかげだよ。",
+            "見て見て！すっごく綺麗なマル！桃子、嬉しいな♪"
+        ];
+        const msgs90 = [
+            "うん、綺麗にまあるくなってるよ！合格点かな。",
+            "おしい！あとちょっとで完璧だったのに。",
+            "なかなかやるね。桃子も負けてられないな。",
+            "これならステージに出しても恥ずかしくない出来だよ。",
+            "お兄ちゃんの優しさが伝わってくるみたいな円だね。"
+        ];
+        const msgs80 = [
+            "トゲトゲはなくなってきたかな？",
+            "うーん、悪くはないけど…もっと上目指せるでしょ？",
+            "まあまあかな。でも、桃子はもっと期待してるよ。",
+            "少し歪んでるけど、味があるといえばあるかも？",
+            "練習の成果は出てるよ。次はいけるんじゃない？"
+        ];
+        const msgs60 = [
+            "まだちょっとサンカクっぽいかも…。",
+            "気が抜けてるんじゃない？桃子、怒るよ？",
+            "お兄ちゃん、疲れてるの？休憩する？",
+            "これじゃ「ローリングさんかく」だね。もっとまあるくして！",
+            "集中力が足りないよ。プロなら結果出してよね。"
+        ];
+        const msgs0 = [
+            "お兄ちゃん、ちゃんとやってよー！",
+            "はぁ…これじゃ桃子のプロデューサー失格だよ。",
+            "何これ…芸術的すぎて桃子にはわからないよ。",
+            "ふざけてるなら、踏み台にしちゃうからね！",
+            "もう一回！納得いくまで帰さないから。"
+        ];
+        
+        const getRandomMsg = (arr) => arr[Math.floor(Math.random() * arr.length)];
+        
+        if (score == 100) {
+            msg = getRandomMsg(msgs100);
+            colorClass = "text-orange-500";
+            triggerConfetti(score); 
+        } else if (score >= 90) {
+            msg = getRandomMsg(msgs90);
+            colorClass = "text-orange-400";
+            triggerConfetti(score); 
+        } else if (score >= 80) {
+            msg = getRandomMsg(msgs80);
+        } else if (score >= 60) {
+            msg = getRandomMsg(msgs60);
+        } else {
+            msg = getRandomMsg(msgs0);
+        }
+
+        currentMessage = msg;
+        messageDiv.innerText = msg;
+        messageDiv.className = `font-bold whitespace-normal break-words leading-tight text-lg md:text-xl ${colorClass}`;
+        
+        resultOverlay.classList.remove('hidden');
+        resultOverlay.classList.add('animate-slide-up');
+    }
+
+    function shareTwitter() {
+        const text = `Circle M@ster Momokoでスコア${currentScore}%を出したよ！\n桃子「${currentMessage}」\n#CircleMasterMomoko #周防桃子`;
+        const url = window.location.href; 
+        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+        window.open(twitterUrl, '_blank');
+    }
+
+    function resetGame() {
+        ctx.clearRect(0, 0, canvasSize, canvasSize);
+        resultOverlay.classList.add('hidden');
+        resultOverlay.classList.remove('animate-slide-up');
+        drawHint();
+    }
+    
+    function triggerConfetti(score) {
+        const colors = ['#EFB864', '#F8A5C2', '#60A5FA', '#FCD34D', '#FFFFFF'];
+        const count = 100; 
+        
+        for (let i = 0; i < count; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.top = '-20px';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+            confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+            
+            let shape = 'triangle';
+            const r = Math.random();
+            if (score >= 100) {
+                if (r < 0.33) shape = 'circle';
+                else if (r < 0.66) shape = 'square';
+            } else if (score >= 90) {
+                if (r < 0.5) shape = 'square';
+            }
+            
+            if (shape === 'triangle') confetti.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+            else if (shape === 'circle') { confetti.style.borderRadius = '50%'; confetti.style.clipPath = 'none'; }
+            else if (shape === 'square') { confetti.style.borderRadius = '0'; confetti.style.clipPath = 'none'; }
+
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 3500);
+        }
+    }
+
+    init();
+
+</script>
+</body>
+</html>
