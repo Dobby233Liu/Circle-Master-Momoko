@@ -453,7 +453,7 @@
     }
 
     function shareTwitter() {
-        const text = `Circle M@ster Momokoでスコア${currentScore}%を出したよ！\n桃子「${currentMessage}」\n#CircleMasterMomoko #周防桃子`;
+        const text = `Circle M@ster Momokoでスコア${currentScore}%を出したよ！\n桃子「${currentMessage}」\n#CircleMasterMomoko`;
         const url = window.location.href; 
         const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
         window.open(twitterUrl, '_blank');
