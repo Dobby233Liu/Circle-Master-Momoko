@@ -2,6 +2,8 @@
 
 [プレイはこちらから](https://m-masaki72.github.io/Circle-Master-Momoko/)
 
+![ScreenShot](ScreenShot.png)
+
 「トゲトゲなさんかくを、まあるくしてね。」
 
 ブラウザで遊べる、きれいな円を描くミニゲームです。
