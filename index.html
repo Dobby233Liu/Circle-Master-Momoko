@@ -187,7 +187,7 @@
                 }
             }
         }
-    }).then(() => applyI18nToTextOfAll());
+    }).then(() => initI18nHandler());
     
     function applyI18nToTextOf(elem) {
         if (!elem?.dataset?.i18n)
@@ -218,16 +218,23 @@
         for (const elem of root.querySelectorAll("[data-i18n]"))
             applyI18nToTextOf(elem);
     }
-    applyI18nToTextOfAll();
     
     const i18nObserver = new MutationObserver(function(records) {
         for (const record of records)
             applyI18nToTextOf(record.target);
     });
-    i18nObserver.observe(document, {
-        subtree: true,
-        attributes: ["data-i18n", "data-i18n-context", "data-i18n-interpolation-data"]
-    });
+    function onLangChange() {
+        document.documentElement.lang = i18next.language;
+        applyI18nToTextOfAll();
+    }
+    function initI18nHandler() {
+        onLangChange();
+        i18nObserver.observe(document, {
+            subtree: true,
+            attributes: ["data-i18n", "data-i18n-context", "data-i18n-interpolation-data"]
+        });
+    }
+    
     function setTextLocalizable(elem, key, options) {
         if (!key) {
             delete elem.dataset.i18n;
