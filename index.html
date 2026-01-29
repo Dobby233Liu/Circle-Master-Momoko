@@ -84,6 +84,10 @@
                 <i id="guide-toggle-icon" class="fa-regular fa-circle"></i>
                 <span id="guide-toggle-text" data-i18n="guideToggleHint" data-i18n-context="off">ガイド: OFF</span>
             </button>
+            <span class="bg-white text-gray-500 border border-gray-200 px-3 py-1 rounded-full text-xs md:text-sm font-bold shadow-sm transition-colors flex items-center gap-1">
+                <label for="language-selector" data-i18n="selectLanguage">言語：</label>
+                <select id="language-selector" disabled="true" required></select>
+            </span>
         </div>
     </div>
 
@@ -136,6 +140,7 @@
 <script>
     i18next.use(i18nextBrowserLanguageDetector).init({
         debug: true,
+        fallbackLng: ["ja"],
         supportedLngs: ["ja", "zh-Hans", "en"],
         detection: {
             order: ["querystring", "navigator"],
@@ -144,6 +149,8 @@
         resources: {
             ja: {
                 translation: {
+                    langName: "日本語",
+                    selectLanguage: "言語：",
                     appName: "Circle M@ster Momoko",
                     howToPlay: "トゲトゲなさんかくを、まあるくしてね。",
                     guideToggleHint_off: "ガイド: OFF",
@@ -193,6 +200,8 @@
             },
             "zh-Hans": {
                 translation: {
+                    langName: "中文（简体）",
+                    selectLanguage: "语言：",
                     appName: "圆环大师桃子",
                     howToPlay: "把带刺的三角形，变成圆圆的哦。",
                     guideToggleHint_off: "辅助线：关闭",
@@ -242,6 +251,8 @@
             },
             en: {
                 translation: {
+                    langName: "English",
+                    selectLanguage: "Language:",
                     appName: "Circle M@ster Momoko",
                     howToPlay: "Turn the spiky triangle into a smooth circle.",
                     guideToggleHint_off: "Guide: OFF",
@@ -286,7 +297,7 @@
                     shareTwitter: "Post",
                     shareTwitterTweet: "I got a score of $t(resultsScoreDisplay, {'score': {{score}}}) in $t(appName)!\nMomoko: \"$t({{message}})\"\n#CircleMasterMomoko",
                     retry: "Again",
-                    acceptedInputTypes: '<i class="fa-solid fa-computer-mouse mr-1"></i>Mouse / <i class="fa-solid fa-fingerprint mx-1"></i>Draw with your finger'
+                    acceptedInputTypes: 'Draw with your <i class="fa-solid fa-computer-mouse mx-1"></i>mouse or <i class="fa-solid fa-fingerprint mx-1"></i>finger'
                 }
             }
         }
@@ -330,12 +341,27 @@
         document.documentElement.lang = i18next.language;
         applyI18nToTextOfAll();
     }
+    
+    const languageSelector = document.getElementById("language-selector");
     function initI18nHandler() {
         onLangChange();
         i18nObserver.observe(document, {
             subtree: true,
             attributes: ["data-i18n", "data-i18n-context", "data-i18n-interpolation-data"]
         });
+        
+        languageSelector.replaceChildren();
+        for (const lng of i18next.options.supportedLngs) {
+            if (lng == "cimode") continue;
+            const option = languageSelector.appendChild(document.createElement("option"));
+            option.value = lng;
+            if (lng == i18next.language) option.selected = true;
+            option.innerText = i18next.getFixedT(lng)("langName");
+        }
+        languageSelector.addEventListener("change", function(ev) {
+            i18next.changeLanguage(ev.target.value).then(() => onLangChange());
+        });
+        languageSelector.disabled = false;
     }
     
     function setTextLocalizable(elem, key, options) {
