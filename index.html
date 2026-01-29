@@ -140,8 +140,12 @@
 <script>
     i18next.use(i18nextBrowserLanguageDetector).init({
         debug: true,
-        fallbackLng: ["ja"],
-        supportedLngs: ["ja", "zh-Hans", "en"],
+        supportedLngs: ["ja", "zh-Hans", "zh-CN", "zh", "en"],
+        fallbackLng: {
+            zh: ["zh-Hans", "ja"],
+            "zh-CN": ["zh-Hans", "ja"],
+            default: ["ja"]
+        },
         detection: {
             order: ["querystring", "navigator"],
             lookupQuerystring: "lang"
@@ -356,7 +360,7 @@
             const option = languageSelector.appendChild(document.createElement("option"));
             option.value = lng;
             if (lng == i18next.language) option.selected = true;
-            option.innerText = i18next.getFixedT(lng)("langName");
+            option.innerText = i18next.t("langName", { lng });
         }
         languageSelector.addEventListener("change", function(ev) {
             i18next.changeLanguage(ev.target.value).then(() => onLangChange());
