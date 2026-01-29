@@ -363,12 +363,13 @@
         });
         
         languageSelector.replaceChildren();
+        const curLangName = i18next.t("languageName");
         for (const lng of TRUE_SUPPORTED_LANGS) {
             if (lng == "cimode") continue;
             const option = languageSelector.appendChild(document.createElement("option"));
             option.value = lng;
-            if (lng == i18next.language) option.selected = true;
             option.innerText = i18next.t("languageName", { lng });
+            if (option.innerText == curLangName) option.selected = true; // HACK
         }
         languageSelector.addEventListener("change", onLanguageSelection);
         languageSelector.disabled = false;
