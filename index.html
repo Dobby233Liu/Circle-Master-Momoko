@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Circle M@ster Momoko</title>
+    <title data-i18n="appName">Circle M@ster Momoko</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome (latest) -->
@@ -72,16 +72,16 @@
     <div id="header-area" class="text-center z-10 flex flex-col items-center justify-center shrink-0 w-full px-4 mb-2">
         <h1 class="text-2xl md:text-4xl lg:text-5xl font-bold momoko-color drop-shadow-sm flex items-center justify-center gap-2 bg-white/80 px-6 py-2 rounded-full backdrop-blur-sm shadow-sm">
             <i class="fa-solid fa-shapes text-orange-400"></i>
-            <span>Circle M@ster Momoko</span>
+            <span data-i18n="appName">Circle M@ster Momoko</span>
         </h1>
         <div class="flex items-center gap-4 mt-2">
-            <p class="text-gray-500 text-xs md:text-sm bg-white/60 px-3 py-1 rounded-md font-bold">
+            <p class="text-gray-500 text-xs md:text-sm bg-white/60 px-3 py-1 rounded-md font-bold" data-i18n="howToPlay">
                 トゲトゲなさんかくを、まあるくしてね。
             </p>
             <!-- Guide Button moved here to save vertical space -->
             <button id="guide-toggle" onclick="toggleGuide()" class="bg-white text-gray-500 border border-gray-200 px-3 py-1 rounded-full text-xs md:text-sm font-bold shadow-sm hover:bg-orange-50 transition-colors flex items-center gap-2 active:scale-95">
-                <i class="fa-regular fa-circle"></i>
-                <span>ガイド: OFF</span>
+                <i id="guide-toggle-icon" class="fa-regular fa-circle"></i>
+                <span id="guide-toggle-text" data-i18n="guideToggleHint" data-i18n-context="off">ガイド: OFF</span>
             </button>
         </div>
     </div>
@@ -97,8 +97,8 @@
                 <!-- Score Row -->
                 <div class="flex items-center justify-center gap-4 w-full">
                     <div class="flex flex-col items-center min-w-[100px]">
-                        <span class="text-gray-400 text-xs uppercase tracking-widest font-bold">Score</span>
-                        <span id="score" class="text-5xl font-black momoko-color leading-none">0%</span>
+                        <span class="text-gray-400 text-xs uppercase tracking-widest font-bold" data-i18n="resultsScoreName">Score</span>
+                        <span id="score" class="text-5xl font-black momoko-color leading-none" data-i18n="resultsScoreDisplay" data-i18n-interpolation-data='{"score": 0}'>{{score}}%</span>
                     </div>
                     
                     <div class="h-12 w-1 bg-orange-200 rounded-full"></div> 
@@ -114,13 +114,13 @@
                     <button onclick="shareTwitter()" class="flex-1 bg-black text-white px-4 py-3 rounded-full font-bold hover:opacity-80 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
                         <!-- Used standard fa-twitter (bird) for guaranteed visibility -->
                         <i class="fa-brands fa-twitter text-xl text-white"></i>
-                        <span>Post</span>
+                        <span data-i18n="shareTwitter">Post</span>
                     </button>
                     
                     <!-- Retry Button -->
                     <button onclick="resetGame()" class="flex-[2] momoko-bg text-white px-4 py-3 rounded-full font-bold hover:opacity-90 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
                         <i class="fa-solid fa-rotate-right text-xl"></i>
-                        <span>もう一回</span>
+                        <span data-i18n="retry">もう一回</span>
                     </button>
                 </div>
             </div>
@@ -128,14 +128,65 @@
     </div>
 
     <!-- Minimal Footer Guide -->
-    <div id="footer-area" class="mt-2 text-gray-400 text-xs md:text-sm text-center bg-white/60 px-6 py-1 rounded-full backdrop-blur-sm font-bold z-10 shrink-0">
+    <div id="footer-area" class="mt-2 text-gray-400 text-xs md:text-sm text-center bg-white/60 px-6 py-1 rounded-full backdrop-blur-sm font-bold z-10 shrink-0" data-i18n="acceptedInputTypes">
         <i class="fa-solid fa-computer-mouse mr-1"></i>マウス / <i class="fa-solid fa-fingerprint mx-1"></i>指で描いてね
     </div>
 
 <script>
     i18next.init({
         debug: true,
-        lng: "cimode"
+        lng: "ja",
+        resources: {
+            ja: {
+                translation: {
+                    appName: "Circle M@ster Momoko",
+                    howToPlay: "トゲトゲなさんかくを、まあるくしてね。",
+                    guideToggleHint_off: "ガイド: OFF",
+                    guideToggleHint_on: "ガイド: ON",
+                    resultsScoreName: "Score",
+                    resultsScoreDisplay: "{{score}}%",
+                    resultComment_100: [
+                        "完璧！桃子のプロデューサーなら当然だね♪",
+                        "すごーい！お兄ちゃん、やる時はやるんだね！",
+                        "満点かぁ…へえ、お兄ちゃんのこと、見直したよ。",
+                        "これが桃子のプロデュースの実力…なんてね、お兄ちゃんのおかげだよ。",
+                        "見て見て！すっごく綺麗なマル！桃子、嬉しいな♪"
+                    ],
+                    resultComment_90: [
+                        "うん、綺麗にまあるくなってるよ！合格点かな。",
+                        "おしい！あとちょっとで完璧だったのに。",
+                        "なかなかやるね。桃子も負けてられないな。",
+                        "これならステージに出しても恥ずかしくない出来だよ。",
+                        "お兄ちゃんの優しさが伝わってくるみたいな円だね。"
+                    ],
+                    resultComment_80: [
+                        "トゲトゲはなくなってきたかな？",
+                        "うーん、悪くはないけど…もっと上目指せるでしょ？",
+                        "まあまあかな。でも、桃子はもっと期待してるよ。",
+                        "少し歪んでるけど、味があるといえばあるかも？",
+                        "練習の成果は出てるよ。次はいけるんじゃない？"
+                    ],
+                    resultComment_60: [
+                        "まだちょっとサンカクっぽいかも…。",
+                        "気が抜けてるんじゃない？桃子、怒るよ？",
+                        "お兄ちゃん、疲れてるの？休憩する？",
+                        "これじゃ「ローリングさんかく」だね。もっとまあるくして！",
+                        "集中力が足りないよ。プロなら結果出してよね。"
+                    ],
+                    resultComment_0: [
+                        "お兄ちゃん、ちゃんとやってよー！",
+                        "はぁ…これじゃ桃子のプロデューサー失格だよ。",
+                        "何これ…芸術的すぎて桃子にはわからないよ。",
+                        "ふざけてるなら、踏み台にしちゃうからね！",
+                        "もう一回！納得いくまで帰さないから。"
+                    ],
+                    shareTwitter: "Post",
+                    shareTwitterTweet: "$t(appName)でスコア$t(resultsScoreDisplay, {'score': {{score}}})を出したよ！\n桃子「$t({{message}})」\n#CircleMasterMomoko",
+                    retry: "もう一回",
+                    acceptedInputTypes: '<i class="fa-solid fa-computer-mouse mr-1"></i>マウス / <i class="fa-solid fa-fingerprint mx-1"></i>指で描いてね'
+                }
+            }
+        }
     }).then(() => applyI18nToTextOfAll());
     
     function applyI18nToTextOf(elem) {
@@ -197,6 +248,8 @@
     const scoreDiv = document.getElementById('score');
     const messageDiv = document.getElementById('message');
     const guideBtn = document.getElementById('guide-toggle');
+    const guideBtnIcon = document.getElementById('guide-toggle-icon');
+    const guideBtnText = document.getElementById('guide-toggle-text');
 
     let isDrawing = false;
     let points = [];
@@ -235,10 +288,14 @@
     function toggleGuide() {
         isGuideMode = !isGuideMode;
         if (isGuideMode) {
-            guideBtn.innerHTML = '<i class="fa-solid fa-check-circle text-orange-500"></i><span class="text-orange-500">ガイド: ON</span>';
+            guideBtnIcon.className = "fa-solid fa-check-circle text-orange-500";
+            guideBtnText.className = "text-orange-500";
+            setTextLocalizable(guideBtnText, "guideToggleHint", { context: "on" });
             guideBtn.classList.add('border-orange-200', 'bg-orange-50');
         } else {
-            guideBtn.innerHTML = '<i class="fa-regular fa-circle"></i><span>ガイド: OFF</span>';
+            guideBtnIcon.className = "fa-regular fa-circle";
+            guideBtnText.className = "";
+            setTextLocalizable(guideBtnText, "guideToggleHint", { context: "off" });
             guideBtn.classList.remove('border-orange-200', 'bg-orange-50');
         }
         resetGame();
@@ -443,67 +500,33 @@
         ctx.stroke();
 
         // Update Text
-        scoreDiv.innerText = score + "%";
+        setTextLocalizable(scoreDiv, "resultsScoreDisplay", {
+            interpolation: { score }
+        });
         
-        let msg = "";
+        let msgContext = "";
         let colorClass = "text-gray-600";
-        
-        const msgs100 = [
-            "完璧！桃子のプロデューサーなら当然だね♪",
-            "すごーい！お兄ちゃん、やる時はやるんだね！",
-            "満点かぁ…へえ、お兄ちゃんのこと、見直したよ。",
-            "これが桃子のプロデュースの実力…なんてね、お兄ちゃんのおかげだよ。",
-            "見て見て！すっごく綺麗なマル！桃子、嬉しいな♪"
-        ];
-        const msgs90 = [
-            "うん、綺麗にまあるくなってるよ！合格点かな。",
-            "おしい！あとちょっとで完璧だったのに。",
-            "なかなかやるね。桃子も負けてられないな。",
-            "これならステージに出しても恥ずかしくない出来だよ。",
-            "お兄ちゃんの優しさが伝わってくるみたいな円だね。"
-        ];
-        const msgs80 = [
-            "トゲトゲはなくなってきたかな？",
-            "うーん、悪くはないけど…もっと上目指せるでしょ？",
-            "まあまあかな。でも、桃子はもっと期待してるよ。",
-            "少し歪んでるけど、味があるといえばあるかも？",
-            "練習の成果は出てるよ。次はいけるんじゃない？"
-        ];
-        const msgs60 = [
-            "まだちょっとサンカクっぽいかも…。",
-            "気が抜けてるんじゃない？桃子、怒るよ？",
-            "お兄ちゃん、疲れてるの？休憩する？",
-            "これじゃ「ローリングさんかく」だね。もっとまあるくして！",
-            "集中力が足りないよ。プロなら結果出してよね。"
-        ];
-        const msgs0 = [
-            "お兄ちゃん、ちゃんとやってよー！",
-            "はぁ…これじゃ桃子のプロデューサー失格だよ。",
-            "何これ…芸術的すぎて桃子にはわからないよ。",
-            "ふざけてるなら、踏み台にしちゃうからね！",
-            "もう一回！納得いくまで帰さないから。"
-        ];
-        
-        const getRandomMsg = (arr) => arr[Math.floor(Math.random() * arr.length)];
-        
+
+        const msgIndex = Math.floor(Math.random() * 5);
         if (score == 100) {
-            msg = getRandomMsg(msgs100);
+            msgContext = 100;
             colorClass = "text-orange-500";
             triggerConfetti(score); 
         } else if (score >= 90) {
-            msg = getRandomMsg(msgs90);
+            msgContext = 90;
             colorClass = "text-orange-400";
             triggerConfetti(score); 
         } else if (score >= 80) {
-            msg = getRandomMsg(msgs80);
+            msgContext = 80;
         } else if (score >= 60) {
-            msg = getRandomMsg(msgs60);
+            msgContext = 60;
         } else {
-            msg = getRandomMsg(msgs0);
+            msgContext = 0;
         }
 
+        const msg = "resultComment_" + msgContext + "." + msgIndex;
         currentMessage = msg;
-        messageDiv.innerText = msg;
+        setTextLocalizable(messageDiv, msg);
         messageDiv.className = `font-bold whitespace-normal break-words leading-tight text-lg md:text-xl ${colorClass}`;
         
         resultOverlay.classList.remove('hidden');
@@ -511,9 +534,14 @@
     }
 
     function shareTwitter() {
-        const text = `Circle M@ster Momokoでスコア${currentScore}%を出したよ！\n桃子「${currentMessage}」\n#CircleMasterMomoko`;
+        const text = i18next.t("shareTwitterTweet", {
+            score: currentScore,
+            message: currentMessage
+        });
         const url = window.location.href; 
-        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+        const twitterUrl = new URL("https://twitter.com/intent/tweet");
+        twitterUrl.searchParams.set("text", text);
+        twitterUrl.searchParams.set("url", url);
         window.open(twitterUrl, '_blank');
     }
 
