@@ -314,7 +314,9 @@
                 }
             }
         }
-    }).then(() => onI18nLoaded());
+    }).then(onI18nLoaded);
+    // i18next.on("initialized", onI18nLoaded);
+    i18next.on("loaded", onI18nLoaded);
     
     function applyI18nToTextOf(elem) {
         if (!elem?.dataset?.i18n)
@@ -354,6 +356,7 @@
         document.documentElement.lang = i18next.language;
         applyI18nToTextOfAll();
     }
+    i18next.on("languageChanged", onLangChange);
     function onI18nLoaded() {
         onLangChange();
         
@@ -365,7 +368,6 @@
         languageSelector.replaceChildren();
         const curLangName = i18next.t("languageName");
         for (const lng of TRUE_SUPPORTED_LANGS) {
-            if (lng == "cimode") continue;
             const option = languageSelector.appendChild(document.createElement("option"));
             option.value = lng;
             option.innerText = i18next.t("languageName", { lng });
@@ -375,7 +377,7 @@
         languageSelector.disabled = false;
     }
     function onLanguageSelection(ev) {
-        i18next.changeLanguage(ev.target.value).then(() => onLangChange());
+        i18next.changeLanguage(ev.target.value);
     }
     
     function setTextLocalizable(elem, key, options) {
