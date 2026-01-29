@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome (latest) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://unpkg.com/i18next@25.8.0/dist/umd/i18next.min.js"></script>
     <style>
         body {
             touch-action: none; /* Prevent scrolling */
@@ -132,6 +133,63 @@
     </div>
 
 <script>
+    i18next.init({
+        debug: true,
+        lng: "cimode"
+    }).then(() => applyI18nToTextOfAll());
+    
+    function applyI18nToTextOf(elem) {
+        if (!elem?.dataset?.i18n)
+            return;
+        
+        const context = elem.dataset.i18nContext;
+        let interpolationData = {};
+        if (elem.dataset.i18nInterpolationData) {
+            try {
+                interpolationData = JSON.parse(elem.dataset.i18nInterpolationData);
+                if (typeof interpolationData !== "object")
+                    throw new Error('typeof interpolationData !== "object"');
+            }
+            catch (err) {
+                console.error("Bad interpolation data for:", elem, err);
+                return false;
+            }
+        }
+        
+        const str = i18next.t(elem.dataset.i18n, {
+            context: context,
+            ...interpolationData
+        });
+        elem.innerHTML = str;
+        return true;
+    }
+    function applyI18nToTextOfAll(root = document) {
+        for (const elem of root.querySelectorAll("[data-i18n]"))
+            applyI18nToTextOf(elem);
+    }
+    applyI18nToTextOfAll();
+    
+    const i18nObserver = new MutationObserver(function(records) {
+        for (const record of records)
+            applyI18nToTextOf(record.target);
+    });
+    i18nObserver.observe(document, {
+        subtree: true,
+        attributes: ["data-i18n", "data-i18n-context", "data-i18n-interpolation-data"]
+    });
+    function setTextLocalizable(elem, key, options) {
+        if (!key) {
+            delete elem.dataset.i18n;
+            return;
+        }
+        elem.dataset.i18n = key;
+        elem.dataset.i18nContext = options?.context;
+        if (!options?.interpolation)
+            delete elem.dataset.i18nInterpolationData;
+        else
+            elem.dataset.i18nInterpolationData = JSON.stringify(options.interpolation);
+    }
+
     const canvas = document.getElementById('gameCanvas');
     const container = document.getElementById('canvas-container');
     const ctx = canvas.getContext('2d');
