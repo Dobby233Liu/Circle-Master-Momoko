@@ -136,7 +136,7 @@
 <script>
     i18next.use(i18nextBrowserLanguageDetector).init({
         debug: true,
-        supportedLngs: ["ja", "zh-Hans"],
+        supportedLngs: ["ja", "zh-Hans", "en"],
         detection: {
             order: ["querystring", "navigator"],
             lookupQuerystring: "lang"
@@ -238,6 +238,55 @@
                     shareTwitterTweet: "我在$t(appName)中获得了$t(resultsScoreDisplay, {'score': {{score}}})的分数！\n桃子：「$t({{message}})」\n#CircleMasterMomoko",
                     retry: "再来一次",
                     acceptedInputTypes: '<i class="fa-solid fa-computer-mouse mr-1"></i>鼠标 / <i class="fa-solid fa-fingerprint mx-1"></i>手指绘制'
+                }
+            },
+            en: {
+                translation: {
+                    appName: "Circle M@ster Momoko",
+                    howToPlay: "Turn the spiky triangle into a smooth circle.",
+                    guideToggleHint_off: "Guide: OFF",
+                    guideToggleHint_on: "Guide: ON",
+                    resultsScoreName: "Score",
+                    resultsScoreDisplay: "{{score}}%",
+                    resultComment_100: [
+                        "Perfect! Of course, that's what I'd expect from Momoko's producer♪",
+                        "Wow! You're really serious when you want to be, Onii-chan!",
+                        "Full marks, huh... I'm impressed, Onii-chan.",
+                        "This is the power of Momoko's producing... Just kidding, it's all thanks to you, Onii-chan.",
+                        "Look, look! It's such a beautiful circle! Momoko is so happy♪"
+                    ],
+                    resultComment_90: [
+                        "Yeah, it's become a nice, smooth circle! I guess that's a passing grade.",
+                        "So close! It was almost perfect.",
+                        "Not bad at all. Momoko can't afford to lose now.",
+                        "With this, I wouldn't be ashamed to take the stage.",
+                        "This circle feels like it's full of your kindness, Onii-chan."
+                    ],
+                    resultComment_80: [
+                        "Has the spikiness mostly gone away?",
+                        "Hmm, it's not bad... but you can aim higher, right?",
+                        "It's okay, I guess. But Momoko was expecting more.",
+                        "It's a bit warped, but maybe you could call it... having character?",
+                        "I can see your practice paying off. You'll get it next time, won't you?"
+                    ],
+                    resultComment_60: [
+                        "It still looks a bit... triangular...",
+                        "Are you losing focus? Momoko's getting angry, you know?",
+                        "Are you tired, Onii-chan? Want to take a break?",
+                        "At this point, it's more of a 'rolling triangle'! Make it more round!",
+                        "You need more concentration. A real pro would deliver results."
+                    ],
+                    resultComment_0: [
+                        "Onii-chan, do it properly!",
+                        "Sigh... You're not cut out to be Momoko's producer.",
+                        "What is this... It's too artistic for Momoko to understand.",
+                        "If you're just fooling around, I'll use you as a footstool!",
+                        "Again! I won't let you leave until I'm satisfied."
+                    ],
+                    shareTwitter: "Post",
+                    shareTwitterTweet: "I got a score of $t(resultsScoreDisplay, {'score': {{score}}}) in $t(appName)!\nMomoko: \"$t({{message}})\"\n#CircleMasterMomoko",
+                    retry: "Again",
+                    acceptedInputTypes: '<i class="fa-solid fa-computer-mouse mr-1"></i>Mouse / <i class="fa-solid fa-fingerprint mx-1"></i>Draw with your finger'
                 }
             }
         }
