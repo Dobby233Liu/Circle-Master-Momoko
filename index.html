@@ -9,6 +9,7 @@
     <!-- FontAwesome (latest) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://unpkg.com/i18next@25.8.0/dist/umd/i18next.min.js"></script>
+    <script src="https://unpkg.com/i18next-browser-languagedetector@8.2.0/dist/umd/i18nextBrowserLanguageDetector.min.js"></script>
     <style>
         body {
             touch-action: none; /* Prevent scrolling */
@@ -133,9 +134,12 @@
     </div>
 
 <script>
-    i18next.init({
+    i18next.use(i18nextBrowserLanguageDetector).init({
         debug: true,
-        lng: "ja",
+        supportedLngs: ["ja", "zh-Hans"],
+        detection: {
+            order: ["querystring", "navigator"]
+        },
         resources: {
             ja: {
                 translation: {
@@ -184,6 +188,55 @@
                     shareTwitterTweet: "$t(appName)でスコア$t(resultsScoreDisplay, {'score': {{score}}})を出したよ！\n桃子「$t({{message}})」\n#CircleMasterMomoko",
                     retry: "もう一回",
                     acceptedInputTypes: '<i class="fa-solid fa-computer-mouse mr-1"></i>マウス / <i class="fa-solid fa-fingerprint mx-1"></i>指で描いてね'
+                }
+            },
+            "zh-Hans": {
+                translation: {
+                    appName: "圆环大师桃子",
+                    howToPlay: "把带刺的三角形，变成圆圆的哦。",
+                    guideToggleHint_off: "辅助线：关闭",
+                    guideToggleHint_on: "辅助线：开启",
+                    resultsScoreName: "分数",
+                    resultsScoreDisplay: "{{score}}%",
+                    resultComment_100: [
+                        "完美！不愧是桃子的制作人呢♪",
+                        "好厉害！哥哥，该出手的时候真不含糊呢！",
+                        "满分啊…嘿，我对哥哥刮目相看了哦。",
+                        "这就是桃子制作的实力…什么的，才不是呢，都是哥哥的功劳啦。",
+                        "快看快看！好漂亮的圆圈！桃子好开心♪"
+                    ],
+                    resultComment_90: [
+                        "嗯，变得很圆润了呢！算合格了吧。",
+                        "可惜！就差一点点就完美了。",
+                        "挺有两下子的嘛。桃子也不能输给你了。",
+                        "有这个水准的话，就算登上舞台也不会觉得丢人了哦。",
+                        "感觉这个圆里能感受到哥哥的温柔呢。"
+                    ],
+                    resultComment_80: [
+                        "那些尖刺是不是差不多消失了？",
+                        "唔…倒也不算差…但还能做得更好吧？",
+                        "马马虎虎吧。不过，桃子可是有更高期待的哦。",
+                        "虽然有点歪，但要说有特色的话，可能也算吧？",
+                        "练习的成果已经体现出来了。下次一定能行吧？"
+                    ],
+                    resultComment_60: [
+                        "好像还是有点三角形的感觉…",
+                        "是不是没集中精神？桃子要生气咯？",
+                        "哥哥，是累了吗？要休息一下吗？",
+                        "这简直是“滚动三角形”嘛。要再圆一点啦！",
+                        "集中力不够哦。如果是专业人士的话，得拿出成果来呀。"
+                    ],
+                    resultComment_0: [
+                        "哥哥，你给我认真一点啦——！",
+                        "哈啊…这样可不够格当桃子的制作人哦。",
+                        "这是什么…太有艺术性了桃子理解不了啦。",
+                        "如果你是在糊弄我，我就把你当脚垫踩哦！",
+                        "再来一次！在你做到我满意之前，我是不会放你走的。"
+                    ],
+                    shareTwitter: "发帖",
+                    shareTwitterTweet: "我在$t(appName)中获得了$t(resultsScoreDisplay, {'score': {{score}}})的分数！\n桃子：「$t({{message}})」\n#CircleMasterMomoko",
+                    retry: "再来一次",
+                    acceptedInputTypes: '<i class="fa-solid fa-computer-mouse mr-1"></i>鼠标 / <i class="fa-solid fa-fingerprint mx-1"></i>手指绘制'
                 }
             }
         }
