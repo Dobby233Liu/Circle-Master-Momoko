@@ -67,7 +67,7 @@
     </style>
 </head>
 <!-- Use h-dvh (dynamic viewport height) for better mobile support -->
-<body class="h-[100dvh] w-screen flex flex-col justify-center items-center select-none">
+<body class="h-[100dvh] w-screen flex flex-col items-center py-2 select-none">
 
     <!-- Compact Header -->
     <div id="header-area" class="text-center z-10 flex flex-col items-center justify-center shrink-0 w-full px-4 mb-2">
@@ -92,7 +92,7 @@
     </div>
 
     <!-- Game Area (Auto-expanding) -->
-    <div id="game-area" class="relative flex items-center justify-center w-full px-2">
+    <div id="game-area" class="relative flex-grow flex items-center justify-center w-full px-2 overflow-hidden">
         <div id="canvas-container">
             <canvas id="gameCanvas"></canvas>
             
