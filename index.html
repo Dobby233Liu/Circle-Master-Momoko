@@ -366,12 +366,11 @@
         });
         
         languageSelector.replaceChildren();
-        const curLangName = i18next.t("languageName");
         for (const lng of TRUE_SUPPORTED_LANGS) {
             const option = languageSelector.appendChild(document.createElement("option"));
             option.value = lng;
             option.innerText = i18next.t("languageName", { lng });
-            if (option.innerText == curLangName) option.selected = true; // HACK
+            if (lng == i18next.resolvedLanguage) option.selected = true;
         }
         languageSelector.addEventListener("change", onLanguageSelection);
         languageSelector.disabled = false;
