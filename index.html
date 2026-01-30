@@ -362,7 +362,8 @@
         
         i18nObserver.observe(document, {
             subtree: true,
-            attributes: ["data-i18n", "data-i18n-context", "data-i18n-interpolation-data"]
+            attributes: true,
+            attributeFilter: ["data-i18n", "data-i18n-context", "data-i18n-interpolation-data"]
         });
         
         languageSelector.replaceChildren();
