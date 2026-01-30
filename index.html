@@ -417,7 +417,9 @@
     const THICKNESS_RATIO = 0.10; 
 
     function init() {
-        resizeCanvas();
+        canvas.imageSmoothingQuality = "high";
+        
+        resizeCanvas(null, true);
         window.addEventListener('resize', resizeCanvas);
         
         // Mouse
@@ -454,7 +456,7 @@
         resetGame();
     }
 
-    function resizeCanvas() {
+    function resizeCanvas(_, init) {
         const gameArea = document.getElementById('game-area');
         const header = document.getElementById('header-area');
         const footer = document.getElementById('footer-area');
@@ -480,20 +482,29 @@
         lineWidthGuide = lineWidthUser * 2;
 
         const dpr = window.devicePixelRatio || 1;
-        canvas.width = canvasSize * dpr;
-        canvas.height = canvasSize * dpr;
+        const intendedImageSize = canvasSize * dpr;
+        let backupImage = null;
+        if (!init && (canvas.width != intendedImageSize || canvas.height != intendedImageSize)) {
+            const backupImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            backupImage = document.createElement("canvas");
+            backupImage.width = backupImageData.width;
+            backupImage.height = backupImageData.height;
+            backupImage.getContext("2d").putImageData(backupImageData, 0, 0);
+            
+            canvas.width = intendedImageSize;
+            canvas.height = intendedImageSize;
+        }
         
         // Set style dimensions
         canvas.style.width = `${canvasSize}px`;
         canvas.style.height = `${canvasSize}px`;
         container.style.width = `${canvasSize}px`;
         container.style.height = `${canvasSize}px`;
+        
+        if (backupImage !== null)
+            ctx.drawImage(backupImage, 0, 0, canvas.width, canvas.height);
 
         ctx.scale(dpr, dpr);
-        
-        if (!isDrawing) {
-            drawHint();
-        }
     }
 
     function drawHint() {
