@@ -503,16 +503,13 @@
             } else {
                 drawHint();
                 setupBrush();
-                let drawnFirstPoint = false;
-                for (const pos of points) {
-                    if (!drawnFirstPoint) {
-                        ctx.moveTo(pos.x, pos.y);
-                        drawnFirstPoint = true;
-                    } else {
-                        ctx.lineTo(pos.x, pos.y);
-                        ctx.stroke();
+                if (points.length > 0) {
+                    ctx.moveTo(points[0].x, points[0].y);
+                    for (let i = 1; i < points.length; i++) {
+                        ctx.lineTo(points[i].x, points[i].y);
                     }
                 }
+                ctx.stroke();
             }
         }
     }
@@ -678,7 +675,7 @@
     function showResult(score, cx, cy, r) {
         currentScore = score;
 
-        showResultGraphics();
+        showResultGraphics(cx, cy, r);
 
         // Update Text
         setTextLocalizable(scoreLabel, "resultScoreLabel", {
@@ -731,6 +728,7 @@
     }
 
     function resetGame() {
+        points = [];
         ctx.clearRect(0, 0, canvasSize, canvasSize);
         resultOverlay.classList.add('hidden');
         resultOverlay.classList.remove('animate-slide-up');
