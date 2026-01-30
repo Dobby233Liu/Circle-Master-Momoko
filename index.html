@@ -92,7 +92,7 @@
     </div>
 
     <!-- Game Area (Auto-expanding) -->
-    <div id="game-area" class="relative flex-grow flex items-center justify-center w-full px-2 overflow-hidden">
+    <div id="game-area" class="relative flex-grow flex items-center justify-center w-full px-2">
         <div id="canvas-container">
             <canvas id="gameCanvas"></canvas>
             
@@ -465,8 +465,8 @@
         const windowWidth = window.innerWidth;
         const windowHeight = window.innerHeight;
         
-        // Subtract vertical UI elements + padding (approx 16px buffer)
-        const uiHeight = header.offsetHeight + footer.offsetHeight + 24;
+        // Subtract vertical UI elements + vertical margins + body padding
+        const uiHeight = header.offsetHeight + footer.offsetHeight + 16 + 16;
         const availableHeight = windowHeight - uiHeight;
         
         // Determine the maximum possible square size
