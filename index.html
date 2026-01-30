@@ -417,9 +417,7 @@
     const THICKNESS_RATIO = 0.10; 
 
     function init() {
-        canvas.imageSmoothingQuality = "high";
-        
-        resizeCanvas(null, true);
+        resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
         
         // Mouse
@@ -456,7 +454,7 @@
         resetGame();
     }
 
-    function resizeCanvas(_, init) {
+    function resizeCanvas() {
         const gameArea = document.getElementById('game-area');
         const header = document.getElementById('header-area');
         const footer = document.getElementById('footer-area');
@@ -483,19 +481,11 @@
 
         const dpr = window.devicePixelRatio || 1;
         const intendedImageSize = canvasSize * dpr;
-        let backupImage = null;
-        const doNotBackup = !isDrawing && points.length == 0;
+        let resized = false;
         if (canvas.width != intendedImageSize || canvas.height != intendedImageSize) {
-            if (!init && !doNotBackup) {
-                const backupImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                backupImage = document.createElement("canvas");
-                backupImage.width = backupImageData.width;
-                backupImage.height = backupImageData.height;
-                backupImage.getContext("2d").putImageData(backupImageData, 0, 0);
-            }
-            
             canvas.width = intendedImageSize;
             canvas.height = intendedImageSize;
+            resized = true;
         }
         
         // Set style dimensions
@@ -503,14 +493,27 @@
         canvas.style.height = `${canvasSize}px`;
         container.style.width = `${canvasSize}px`;
         container.style.height = `${canvasSize}px`;
-        
-        if (backupImage !== null)
-            ctx.drawImage(backupImage, 0, 0, canvas.width, canvas.height);
 
         ctx.scale(dpr, dpr);
 
-        if (doNotBackup) {
-            drawHint();
+        if (resized) {
+            if (!isDrawing && points.length >= 20) {
+                setupBrush();
+                showResultGraphics();
+            } else {
+                drawHint();
+                setupBrush();
+                let drawnFirstPoint = false;
+                for (const pos of points) {
+                    if (!drawnFirstPoint) {
+                        ctx.moveTo(pos.x, pos.y);
+                        drawnFirstPoint = true;
+                    } else {
+                        ctx.lineTo(pos.x, pos.y);
+                        ctx.stroke();
+                    }
+                }
+            }
         }
     }
 
@@ -538,6 +541,13 @@
         return { x: clientX - rect.left, y: clientY - rect.top };
     }
 
+    function setupBrush() {
+        ctx.beginPath();
+        ctx.strokeStyle = '#EFB864'; 
+        ctx.lineWidth = lineWidthUser;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+    }
     function startDrawing(e) {
         if (!resultOverlay.classList.contains('hidden')) resetGame();
         isDrawing = true;
@@ -550,11 +560,7 @@
         const pos = getPos(e);
         points.push(pos);
         
-        ctx.beginPath();
-        ctx.strokeStyle = '#EFB864'; 
-        ctx.lineWidth = lineWidthUser;
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
+        setupBrush();
         ctx.moveTo(pos.x, pos.y);
     }
 
@@ -608,9 +614,7 @@
         showResult(score, centerX, centerY, avgRadius);
     }
 
-    function showResult(score, cx, cy, r) {
-        currentScore = score;
-        
+    function showResultGraphics(cx, cy, r) {
         ctx.clearRect(0, 0, canvasSize, canvasSize);
 
         if (isGuideMode) {
@@ -669,6 +673,12 @@
             }
         }
         ctx.stroke();
+    }
+    
+    function showResult(score, cx, cy, r) {
+        currentScore = score;
+
+        showResultGraphics();
 
         // Update Text
         setTextLocalizable(scoreLabel, "resultScoreLabel", {
