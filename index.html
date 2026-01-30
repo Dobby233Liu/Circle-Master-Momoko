@@ -484,8 +484,9 @@
         const dpr = window.devicePixelRatio || 1;
         const intendedImageSize = canvasSize * dpr;
         let backupImage = null;
+        const doNotBackup = !isDrawing && points.length == 0;
         if (canvas.width != intendedImageSize || canvas.height != intendedImageSize) {
-            if (!init) {
+            if (!init && !doNotBackup) {
                 const backupImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
                 backupImage = document.createElement("canvas");
                 backupImage.width = backupImageData.width;
@@ -507,6 +508,10 @@
             ctx.drawImage(backupImage, 0, 0, canvas.width, canvas.height);
 
         ctx.scale(dpr, dpr);
+
+        if (doNotBackup) {
+            drawHint();
+        }
     }
 
     function drawHint() {
