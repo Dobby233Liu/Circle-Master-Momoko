@@ -329,8 +329,7 @@
                 interpolationData = JSON.parse(elem.dataset.i18nInterpolationData);
                 if (typeof interpolationData !== "object")
                     throw new Error('typeof interpolationData !== "object"');
-            }
-            catch (err) {
+            } catch (err) {
                 console.error("Bad interpolation data for:", elem, err);
                 return false;
             }
