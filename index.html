@@ -484,12 +484,14 @@
         const dpr = window.devicePixelRatio || 1;
         const intendedImageSize = canvasSize * dpr;
         let backupImage = null;
-        if (!init && (canvas.width != intendedImageSize || canvas.height != intendedImageSize)) {
-            const backupImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            backupImage = document.createElement("canvas");
-            backupImage.width = backupImageData.width;
-            backupImage.height = backupImageData.height;
-            backupImage.getContext("2d").putImageData(backupImageData, 0, 0);
+        if (canvas.width != intendedImageSize || canvas.height != intendedImageSize) {
+            if (!init) {
+                const backupImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                backupImage = document.createElement("canvas");
+                backupImage.width = backupImageData.width;
+                backupImage.height = backupImageData.height;
+                backupImage.getContext("2d").putImageData(backupImageData, 0, 0);
+            }
             
             canvas.width = intendedImageSize;
             canvas.height = intendedImageSize;
