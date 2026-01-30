@@ -503,13 +503,7 @@
             } else {
                 drawHint();
                 setupBrush();
-                if (points.length > 0) {
-                    ctx.moveTo(points[0].x * canvasSize, points[0].y * canvasSize);
-                    for (let i = 1; i < points.length; i++) {
-                        ctx.lineTo(points[i].x * canvasSize, points[i].y * canvasSize);
-                    }
-                }
-                ctx.stroke();
+                preparePointsLine(true);
             }
         }
     }
@@ -531,11 +525,31 @@
         }
     }
 
+    class Point {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+        }
+        
+        static fromCanvasPos(x, y) {
+            return new this(x / canvasSize, y / canvasSize);
+        }
+        static fromCanvasClientPos(clientX, clientY) {
+            const rect = canvas.getBoundingClientRect();
+            return this.fromCanvasPos(clientX - rect.left, clientY - rect.top);
+        }
+        
+        getOnCanvasX() {
+            return this.x * canvasSize;
+        }
+        getOnCanvasY() {
+            return this.y * canvasSize;
+        }
+    }
     function getPos(e) {
-        const rect = canvas.getBoundingClientRect();
         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
         const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        return { x: (clientX - rect.left) / canvasSize, y: (clientY - rect.top) / canvasSize };
+        return Point.fromCanvasClientPos(clientX, clientY);
     }
 
     function setupBrush() {
@@ -558,14 +572,14 @@
         points.push(pos);
         
         setupBrush();
-        ctx.moveTo(pos.x * canvasSize, pos.y * canvasSize);
+        ctx.moveTo(pos.getOnCanvasX(), pos.getOnCanvasY());
     }
 
     function draw(e) {
         if (!isDrawing) return;
         const pos = getPos(e);
         points.push(pos);
-        ctx.lineTo(pos.x * canvasSize, pos.y * canvasSize);
+        ctx.lineTo(pos.getOnCanvasX(), pos.getOnCanvasY());
         ctx.stroke();
     }
 
@@ -574,6 +588,17 @@
         isDrawing = false;
         if (points.length < 20) return;
         evaluateCircle();
+    }
+    
+    function preparePointsLine(doStrokeForEveryPoint) {
+        if (points.length > 0) {
+            ctx.moveTo(points[0].getOnCanvasX(), points[0].getOnCanvasY());
+            for (let i = 1; i < points.length; i++) {
+                ctx.lineTo(points[i].getOnCanvasX(), points[i].getOnCanvasY());
+                if (doStrokeForEveryPoint)
+                    ctx.stroke();
+            }
+        }
     }
 
     function evaluateCircle() {
@@ -613,12 +638,12 @@
 
     let [resultCx, resultCy, resultR] = [0, 0, 0];
     function showResultGraphics(cx, cy, r) {
-        cx = resultCx = cx ?? resultCx;
-        cy = resultCy = cy ?? resultCy;
-        r = resultR = r ?? resultR;
-        cx *= canvasSize;
-        cy *= canvasSize;
-        r *= canvasSize;
+        resultCx = cx ?? resultCx;
+        resultCy = cy ?? resultCy;
+        resultR = r ?? resultR;
+        cx = resultCx * canvasSize;
+        cy = resultCy * canvasSize;
+        r = resultR * canvasSize;
         
         ctx.clearRect(0, 0, canvasSize, canvasSize);
 
@@ -647,12 +672,7 @@
         ctx.globalCompositeOperation = 'xor';
 
         ctx.beginPath();
-        if (points.length > 0) {
-            ctx.moveTo(points[0].x * canvasSize, points[0].y * canvasSize);
-            for (let i = 1; i < points.length; i++) {
-                ctx.lineTo(points[i].x * canvasSize, points[i].y * canvasSize);
-            }
-        }
+        preparePointsLine();
         ctx.strokeStyle = 'rgba(239, 184, 100, 0.4)';
         ctx.lineWidth = visualThickness; 
         ctx.stroke();
@@ -671,12 +691,7 @@
         ctx.beginPath();
         ctx.strokeStyle = '#555';
         ctx.lineWidth = lineWidthUser * 0.6;
-        if (points.length > 0) {
-            ctx.moveTo(points[0].x * canvasSize, points[0].y * canvasSize);
-            for (let i = 1; i < points.length; i++) {
-                ctx.lineTo(points[i].x * canvasSize, points[i].y * canvasSize);
-            }
-        }
+        preparePointsLine();
         ctx.stroke();
     }
     
