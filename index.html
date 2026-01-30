@@ -613,9 +613,9 @@
 
     let [resultCx, resultCy, resultR] = [0, 0, 0];
     function showResultGraphics(cx, cy, r) {
-        resultCx = cx ?? resultCx;
-        resultCy = cy ?? resultCy;
-        resultR = r ?? resultR;
+        cx = resultCx = cx ?? resultCx;
+        cy = resultCy = cy ?? resultCy;
+        r = resultR = r ?? resultR;
         cx *= canvasSize;
         cy *= canvasSize;
         r *= canvasSize;
