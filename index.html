@@ -550,31 +550,27 @@
         }
     }
 
-    class Point {
-        constructor(x, y) {
-            this.x = x;
-            this.y = y;
+    class CircleGamePoint extends DOMPoint {
+        static fromPoint(p) {
+            return new this(p.x, p.y, p.z, p.w);
         }
         
-        static fromCanvasPos(x, y) {
-            return new this(x / canvasSize, y / canvasSize);
+        static from2DScreenPos(x, y, t) {
+            return this.fromPoint((t ?? ctx.getTransform()).transformPoint({ x, y }));
         }
-        static fromCanvasClientPos(clientX, clientY) {
+        
+        static fromInputEvent(ev) {
+            // single touch only
+            const clientX = ev.touches ? ev.touches[0].clientX : ev.clientX;
+            const clientY = ev.touches ? ev.touches[0].clientY : ev.clientY;
             const rect = canvas.getBoundingClientRect();
-            return this.fromCanvasPos(clientX - rect.left, clientY - rect.top);
+            return this.from2DScreenPos(clientX - rect.left, clientY - rect.top);
         }
         
-        getOnCanvasX() {
-            return this.x * canvasSize;
+        to2DCanvasPos(t) {
+            const p = (t ?? ctx.getTransform()).inverse().transformPoint(this);
+            return [p.x, p.y];
         }
-        getOnCanvasY() {
-            return this.y * canvasSize;
-        }
-    }
-    function getPos(e) {
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        return Point.fromCanvasClientPos(clientX, clientY);
     }
 
     let startDrawingDebounce = false;
@@ -615,16 +611,16 @@
         
         setupUserBrush();
         ctx.beginPath();
-        const pos = getPos(e);
+        const pos = CircleGamePoint.fromInputEvent(e);
         points.push(pos);
-        ctx.moveTo(pos.getOnCanvasX(), pos.getOnCanvasY());
+        ctx.moveTo(...pos.to2DCanvasPos());
     }
 
     function draw(e) {
         if (!isDrawing) return;
-        const pos = getPos(e);
+        const pos = CircleGamePoint.fromInputEvent(e);
         points.push(pos);
-        ctx.lineTo(pos.getOnCanvasX(), pos.getOnCanvasY());
+        ctx.lineTo(...pos.to2DCanvasPos());
         ctx.stroke();
     }
 
@@ -638,9 +634,9 @@
     function drawUserPainting(strokeImmediately) {
         if (points.length <= 0) return;
         ctx.beginPath();
-        ctx.moveTo(points[0].getOnCanvasX(), points[0].getOnCanvasY());
+        ctx.moveTo(...points[0].to2DCanvasPos());
         for (let i = 1; i < points.length; i++) {
-            ctx.lineTo(points[i].getOnCanvasX(), points[i].getOnCanvasY());
+            ctx.lineTo(...points[i].to2DCanvasPos());
             if (strokeImmediately)
                 ctx.stroke();
         }
@@ -687,9 +683,9 @@
         resultCx = cx ?? resultCx;
         resultCy = cy ?? resultCy;
         resultR = r ?? resultR;
-        cx = resultCx * canvasSize;
-        cy = resultCy * canvasSize;
-        r = resultR * canvasSize;
+        cx = resultCx;
+        cy = resultCy;
+        r = resultR;
         
         clearCanvas();
         drawHint(true);
