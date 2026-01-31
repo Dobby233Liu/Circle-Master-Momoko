@@ -436,7 +436,7 @@
         
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
-        canvas.addEventListener("contextrestored", drawFullFrame);
+        canvas.addEventListener("contextrestored", redrawCanvas);
         
         // Mouse
         canvas.addEventListener('mousedown', startDrawing);
@@ -525,17 +525,17 @@
         }
         
         if (resized) {
-            drawFullFrame();
+            redrawCanvas();
         }
     }
 
-    function drawFullFrame() {
+    function redrawCanvas() {
         if (!isDrawing && points.length >= MIN_POINT_COUNT) {
-            setupBrush();
+            setupUserBrush();
             showResultGraphics();
         } else {
             drawHint();
-            setupBrush();
+            setupUserBrush();
             drawUserPainting(true);
         }
     }
@@ -590,7 +590,7 @@
         startDrawingDebounceTimer = null;
     }
 
-    function setupBrush() {
+    function setupUserBrush() {
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
         ctx.strokeStyle = '#EFB864'; 
@@ -613,7 +613,7 @@
         clearCanvas();
         drawHint(); 
         
-        setupBrush();
+        setupUserBrush();
         ctx.beginPath();
         const pos = getPos(e);
         points.push(pos);
