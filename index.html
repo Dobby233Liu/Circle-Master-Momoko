@@ -550,31 +550,27 @@
         }
     }
 
-    class Point {
+    class CircleGamePoint {
         constructor(x, y) {
             this.x = x;
             this.y = y;
         }
         
-        static fromCanvasPos(x, y) {
+        static fromScreenPos(x, y) {
             return new this(x / canvasSize, y / canvasSize);
         }
-        static fromCanvasClientPos(clientX, clientY) {
+        
+        static fromInputEvent(ev) {
+            // single touch only
+            const clientX = ev.touches ? ev.touches[0].clientX : ev.clientX;
+            const clientY = ev.touches ? ev.touches[0].clientY : ev.clientY;
             const rect = canvas.getBoundingClientRect();
-            return this.fromCanvasPos(clientX - rect.left, clientY - rect.top);
+            return this.fromScreenPos(clientX - rect.left, clientY - rect.top);
         }
         
-        getOnCanvasX() {
-            return this.x * canvasSize;
+        toCanvasPos() {
+            return [this.x * canvasSize, this.y * canvasSize];
         }
-        getOnCanvasY() {
-            return this.y * canvasSize;
-        }
-    }
-    function getPos(e) {
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        return Point.fromCanvasClientPos(clientX, clientY);
     }
 
     let startDrawingDebounce = false;
@@ -615,16 +611,16 @@
         
         setupUserBrush();
         ctx.beginPath();
-        const pos = getPos(e);
+        const pos = CircleGamePoint.fromInputEvent(e);
         points.push(pos);
-        ctx.moveTo(pos.getOnCanvasX(), pos.getOnCanvasY());
+        ctx.moveTo(...pos.toCanvasPos());
     }
 
     function draw(e) {
         if (!isDrawing) return;
-        const pos = getPos(e);
+        const pos = CircleGamePoint.fromInputEvent(e);
         points.push(pos);
-        ctx.lineTo(pos.getOnCanvasX(), pos.getOnCanvasY());
+        ctx.lineTo(...pos.toCanvasPos());
         ctx.stroke();
     }
 
@@ -638,9 +634,9 @@
     function drawUserPainting(strokeImmediately) {
         if (points.length <= 0) return;
         ctx.beginPath();
-        ctx.moveTo(points[0].getOnCanvasX(), points[0].getOnCanvasY());
+        ctx.moveTo(...points[0].toCanvasPos());
         for (let i = 1; i < points.length; i++) {
-            ctx.lineTo(points[i].getOnCanvasX(), points[i].getOnCanvasY());
+            ctx.lineTo(...points[i].toCanvasPos());
             if (strokeImmediately)
                 ctx.stroke();
         }
