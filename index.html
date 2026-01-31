@@ -509,6 +509,9 @@
             container.style.height = `${canvasSize}px`;
         }
 
+        if (dpr > 1)
+            ctx.scale(dpr, dpr);
+        
         if (resized) {
             if (!isDrawing && points.length >= MIN_POINT_COUNT) {
                 setupBrush();
@@ -522,14 +525,14 @@
     }
 
     function drawHint() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear before drawing hint
+        ctx.clearRect(0, 0, canvasSize, canvasSize); // Clear before drawing hint
 
         if (isGuideMode) {
             ctx.beginPath();
             ctx.strokeStyle = '#FED7AA'; 
             ctx.lineWidth = lineWidthGuide; 
             ctx.setLineDash([]); 
-            ctx.arc(canvas.width/2, canvas.height/2, canvas.width/3, 0, Math.PI * 2);
+            ctx.arc(canvasSize/2, canvasSize/2, canvasSize/3, 0, Math.PI * 2);
             ctx.stroke();
             
             // Removed center square hint
@@ -553,10 +556,10 @@
         }
         
         getOnCanvasX() {
-            return this.x * canvas.width;
+            return this.x * canvasSize;
         }
         getOnCanvasY() {
-            return this.y * canvas.height;
+            return this.y * canvasSize;
         }
     }
     function getPos(e) {
@@ -578,7 +581,7 @@
         points = [];
         resultOverlay.classList.add('hidden');
         resultOverlay.classList.remove('animate-fade-in-and-slide-up');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvasSize, canvasSize);
         drawHint(); 
         
         const pos = getPos(e);
@@ -651,18 +654,18 @@
         resultCx = cx ?? resultCx;
         resultCy = cy ?? resultCy;
         resultR = r ?? resultR;
-        cx = resultCx * canvas.width;
-        cy = resultCy * canvas.height;
-        r = resultR * canvas.width;
+        cx = resultCx * canvasSize;
+        cy = resultCy * canvasSize;
+        r = resultR * canvasSize;
         
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvasSize, canvasSize);
 
         if (isGuideMode) {
              ctx.save();
              ctx.beginPath();
              ctx.strokeStyle = '#FFF7ED'; 
              ctx.lineWidth = lineWidthGuide; 
-             ctx.arc(canvas.width/2, canvas.height/2, canvas.width/3, 0, Math.PI * 2);
+             ctx.arc(canvasSize/2, canvasSize/2, canvasSize/3, 0, Math.PI * 2);
              ctx.stroke();
              ctx.restore();
         }
@@ -764,7 +767,7 @@
         points = [];
         resultOverlay.classList.add('hidden');
         resultOverlay.classList.remove('animate-fade-in-and-slide-up');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvasSize, canvasSize);
         drawHint();
     }
     
