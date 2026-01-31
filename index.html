@@ -472,23 +472,21 @@
         const I_PREFER_MY_STUPID_ANIMATION_OVER_CORRECTNESS = false;
         if (I_PREFER_MY_STUPID_ANIMATION_OVER_CORRECTNESS) {
             // Calculate available space
-            const windowWidth = window.innerWidth;
-            const windowHeight = window.innerHeight;
+            const windowDims = document.documentElement.getBoundingClientRect();
             
             // Subtract vertical UI elements + vertical margins + body padding
-            const uiHeight = header.offsetHeight + footer.offsetHeight + 16 + 16;
-            const availableHeight = windowHeight - uiHeight;
+            const uiHeight = header.getBoundingClientRect().height + footer.getBoundingClientRect().height + 16 + 16;
+            const availableHeight = windowDims.height - uiHeight;
             
             // Determine the maximum possible square size
-            // We allow it to go much larger now (up to 800px or 95% of screen)
-            const maxDimension = Math.min(windowWidth - 24, availableHeight);
+            const maxDimension = Math.min(windowDims.width - 24, availableHeight);
             
             // Clamp min size
             canvasSize = Math.max(300, maxDimension);
         } else {
             // We rely on the browser's layout engine to calculate available space
             canvas.classList.add("hidden");
-            canvasSize = container.offsetHeight;
+            canvasSize = container.getBoundingClientRect().width;
             canvas.classList.remove("hidden");
         }
         
