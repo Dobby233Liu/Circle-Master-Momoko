@@ -35,24 +35,26 @@
             }
         }
         
-        #gameCanvas.game-canvas-downscaled {
-            image-rendering: pixelated;
-        }
-        
-        .confetti {
-            @apply absolute pointer-events-none w-[14px] h-[14px] bg-[#f00] animate-confetti-fall transform-gpu;
-        }
-        .confetti.confetti-triangle {
-            @apply rounded-none;
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-        }
-        .confetti.confetti-circle {
-            @apply rounded-full;
-            clip-path: none;
-        }
-        .confetti.confetti-square {
-            @apply rounded-none;
-            clip-path: none;
+        @layer components {
+            #gameCanvas.game-canvas-downscaled {
+                image-rendering: pixelated;
+            }
+            
+            .confetti {
+                @apply absolute pointer-events-none w-[14px] h-[14px] animate-confetti-fall transform-gpu;
+            }
+            .confetti.confetti-triangle {
+                @apply rounded-none;
+                clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            }
+            .confetti.confetti-circle {
+                @apply rounded-full;
+                clip-path: none;
+            }
+            .confetti.confetti-square {
+                @apply rounded-none;
+                clip-path: none;
+            }
         }
     </style>
     <!-- Tailwind CSS (ideally we wouldn't use it like this, unluckily we ship as a zero-build process single file) -->
