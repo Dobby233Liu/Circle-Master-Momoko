@@ -675,7 +675,7 @@
         score = Math.max(0, Math.min(100, score));
 
         startStartDrawingDebounce();
-        showResult(score, centerX/canvasSize, centerY/canvasSize, avgRadius/canvasSize);
+        showResult(score, centerX, centerY, avgRadius);
     }
 
     let [resultCx, resultCy, resultR] = [0, 0, 0];
@@ -683,9 +683,9 @@
         resultCx = cx ?? resultCx;
         resultCy = cy ?? resultCy;
         resultR = r ?? resultR;
-        cx = resultCx * canvasSize;
-        cy = resultCy * canvasSize;
-        r = resultR * canvasSize;
+        cx = resultCx;
+        cy = resultCy;
+        r = resultR;
         
         clearCanvas();
         drawHint(true);
