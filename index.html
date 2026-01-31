@@ -84,7 +84,7 @@
         </div>
     
         <!-- Game Area (Auto-expanding) -->
-        <div id="game-area" class="relative flex-grow flex items-center justify-center max-w-full my-2">
+        <div id="game-area" class="relative flex-grow flex items-center justify-center max-w-full my-2 px-6">
             <div id="canvas-container" class="relative h-full min-h-[300px] w-auto max-w-full max-h-full aspect-square bg-white shadow-xl-mine rounded-3xl transition-all duration-200 ease-out">
                 <canvas id="gameCanvas" class="cursor-crosshair"></canvas>
                 
@@ -477,15 +477,12 @@
             // Calculate available space
             const windowDims = document.documentElement.getBoundingClientRect();
             
-            // Subtract vertical UI elements + vertical margins + body padding
-            const uiHeight = header.getBoundingClientRect().height + footer.getBoundingClientRect().height + 16 + 16;
+            // Subtract body padding + vertical UI element heights + vertical margin of canvas
+            const uiHeight = 16 + header.getBoundingClientRect().height + footer.getBoundingClientRect().height + 16;
             const availableHeight = windowDims.height - uiHeight;
             
-            // Determine the maximum possible square size
-            const maxDimension = Math.min(windowDims.width - 24, availableHeight);
-            
-            // Clamp min size
-            canvasSize = Math.max(300, maxDimension);
+            // Determine the maximum possible square size (24 corresponds to px-6)
+            canvasSize = Math.min(windowDims.width - 24, availableHeight);
         } else {
             // We rely on the browser's layout engine to calculate available space
             canvas.classList.add("hidden");
