@@ -525,29 +525,24 @@
         if (resized) {
             if (!isDrawing && points.length >= MIN_POINT_COUNT) {
                 setupBrush();
+                ctx.beginPath();
                 showResultGraphics();
             } else {
                 drawHint();
                 setupBrush();
+                ctx.beginPath();
                 preparePointsLine(true);
             }
         }
     }
 
-    function drawHint() {
-        ctx.clearRect(0, 0, canvasSize, canvasSize); // Clear before drawing hint
-
+    function drawHint(results) {
         if (isGuideMode) {
             ctx.beginPath();
-            ctx.strokeStyle = '#FED7AA'; 
+            ctx.strokeStyle = results ? '#FFF7ED' : '#FED7AA'; 
             ctx.lineWidth = lineWidthGuide; 
-            ctx.setLineDash([]); 
             ctx.arc(canvasSize/2, canvasSize/2, canvasSize/3, 0, Math.PI * 2);
             ctx.stroke();
-            
-            // Removed center square hint
-        } else {
-            // Removed center square hint
         }
     }
 
@@ -579,11 +574,13 @@
     }
 
     function setupBrush() {
-        ctx.beginPath();
-        ctx.strokeStyle = '#EFB864'; 
-        ctx.lineWidth = lineWidthUser;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
+        ctx.strokeStyle = '#EFB864'; 
+        ctx.lineWidth = lineWidthUser;
+    }
+    function clearCanvas() {
+        ctx.clearRect(0, 0, canvasSize, canvasSize);
     }
     function startDrawing(e) {
         if (!resultOverlay.classList.contains('hidden')) resetGame();
@@ -591,13 +588,13 @@
         points = [];
         resultOverlay.classList.add('hidden');
         resultOverlay.classList.remove('animate-fade-in-and-slide-up');
-        ctx.clearRect(0, 0, canvasSize, canvasSize);
+        clearCanvas();
         drawHint(); 
         
+        setupBrush();
+        ctx.beginPath();
         const pos = getPos(e);
         points.push(pos);
-        
-        setupBrush();
         ctx.moveTo(pos.getOnCanvasX(), pos.getOnCanvasY());
     }
 
@@ -668,38 +665,24 @@
         cy = resultCy * canvasSize;
         r = resultR * canvasSize;
         
-        ctx.clearRect(0, 0, canvasSize, canvasSize);
-
-        if (isGuideMode) {
-             ctx.save();
-             ctx.beginPath();
-             ctx.strokeStyle = '#FFF7ED'; 
-             ctx.lineWidth = lineWidthGuide; 
-             ctx.arc(canvasSize/2, canvasSize/2, canvasSize/3, 0, Math.PI * 2);
-             ctx.stroke();
-             ctx.restore();
-        }
+        clearCanvas();
+        drawHint(true);
 
         const visualThickness = r * THICKNESS_RATIO;
-
-        ctx.save();
+        ctx.strokeStyle = 'rgba(239, 184, 100, 0.4)';
+        ctx.lineWidth = visualThickness;
         
         // 1. Ideal "Thick" Circle
         ctx.beginPath();
         ctx.arc(cx, cy, r, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(239, 184, 100, 0.4)'; 
-        ctx.lineWidth = visualThickness; 
         ctx.stroke();
 
         // 2. XOR with User's Drawing
         ctx.globalCompositeOperation = 'xor';
         ctx.beginPath();
         preparePointsLine();
-        ctx.strokeStyle = 'rgba(239, 184, 100, 0.4)';
-        ctx.lineWidth = visualThickness; 
         ctx.stroke();
-
-        ctx.restore();
+        ctx.globalCompositeOperation = 'source-over';
         
         // --- OUTLINE LAYER ---
         ctx.beginPath();
@@ -777,7 +760,7 @@
         points = [];
         resultOverlay.classList.add('hidden');
         resultOverlay.classList.remove('animate-fade-in-and-slide-up');
-        ctx.clearRect(0, 0, canvasSize, canvasSize);
+        clearCanvas();
         drawHint();
     }
     
