@@ -529,7 +529,7 @@
                 drawHint();
                 setupBrush();
                 ctx.beginPath();
-                preparePointsLine(true);
+                drawUserPainting(true);
             }
         }
     }
@@ -611,14 +611,16 @@
         evaluateCircle();
     }
     
-    function preparePointsLine(doStrokeForEveryPoint) {
+    function drawUserPainting(strokeImmediately) {
         if (points.length <= 0) return;
         ctx.moveTo(points[0].getOnCanvasX(), points[0].getOnCanvasY());
         for (let i = 1; i < points.length; i++) {
             ctx.lineTo(points[i].getOnCanvasX(), points[i].getOnCanvasY());
-            if (doStrokeForEveryPoint)
+            if (strokeImmediately)
                 ctx.stroke();
         }
+        if (!strokeImmediately)
+            ctx.stroke();
     }
 
     function evaluateCircle() {
@@ -678,8 +680,7 @@
         // 2. XOR with User's Drawing
         ctx.globalCompositeOperation = 'xor';
         ctx.beginPath();
-        preparePointsLine();
-        ctx.stroke();
+        drawUserPainting();
         ctx.globalCompositeOperation = 'source-over';
         
         // --- OUTLINE LAYER ---
@@ -694,8 +695,7 @@
         ctx.beginPath();
         ctx.strokeStyle = '#555';
         ctx.lineWidth = lineWidthUser * 0.6;
-        preparePointsLine();
-        ctx.stroke();
+        drawUserPainting();
     }
     
     function showResult(score, cx, cy, r) {
