@@ -5,70 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title data-i18n="appName">Circle M@ster Momoko</title>
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <!-- FontAwesome (latest) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://unpkg.com/i18next@25.8.0/dist/umd/i18next.min.js"></script>
     <script src="https://unpkg.com/i18next-browser-languagedetector@8.2.0/dist/umd/i18nextBrowserLanguageDetector.min.js"></script>
-    <style>
-        body {
-            touch-action: none; /* Prevent scrolling */
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: #ffeec2; 
-            /* Background Pattern */
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.6'%3E%3Cpath d='M10 10h10v10H10z'/%3E%3Ccircle cx='40' cy='40' r='5'/%3E%3Cpath d='M40 10l5 10h-10z'/%3E%3Cpath d='M10 40h10v10H10z'/%3E%3Cpath d='M25 50l5 10h-10z'/%3E%3Ccircle cx='50' cy='20' r='3'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            background-size: 120px 120px;
-            overflow: hidden; /* Prevent body scroll completely */
+    <style type="text/tailwindcss">
+        @theme {
+            --font-sans-mine: 'Helvetica Neue', Arial, var(--font-sans);
+            --color-yellow-101: #ffeec2;
+            --bg-shapes: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 60 60"><g fill="%23ffffff" fill-opacity=".6" fill-rule="evenodd"><path d="M10 10h10v10H10z"/><circle cx="40" cy="40" r="5"/><path d="m40 10 5 10H35zM10 40h10v10H10zm15 10 5 10H20z"/><circle cx="50" cy="20" r="3"/></g></svg>');
+            --color-momoko: #EFB864;
+            --shadow-xl-mine: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --animate-fade-in-and-slide-up: fade-in-and-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            --animate-confetti-fall: fall linear forwards;
         }
         
-        /* Canvas Styling */
-        #canvas-container {
-            position: relative;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-            background: white;
-            border-radius: 1.5rem;
-            cursor: crosshair;
-            transition: all 0.2s ease-out;
+        @keyframes fade-in-and-slide-up {
+            from { opacity: 0; transform: translate(0, 100%); }
+            to { opacity: 1; transform: translate(0, 0); }
         }
-
-        #result-overlay {
-            background: rgba(255, 255, 255, 0.95); 
-            backdrop-filter: blur(8px);
-            border-radius: 0 0 1.5rem 1.5rem; /* Match canvas bottom rounded corners */
-        }
-
-        /* Animations */
-        @keyframes slideUp {
-            from { opacity: 0; transform: translate(-50%, 100%); }
-            to { opacity: 1; transform: translate(-50%, 0); }
-        }
-        .animate-slide-up {
-            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .momoko-color { color: #EFB864; }
-        .momoko-bg { background-color: #EFB864; }
         
-        .confetti {
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            background-color: #f00;
-            animation: fall linear forwards;
-            z-index: 100;
-            pointer-events: none;
-        }
         @keyframes fall {
             to { transform: translateY(100vh) rotate(720deg); }
+        }
+        
+        .confetti {
+            @apply absolute top-[-20px] pointer-events-none w-[14px] h-[14px] bg-[#f00] z-100 animate-confetti-fall transform-gpu;
+        }
+        .confetti.confetti-triangle {
+            @apply rounded-none;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+        .confetti.confetti-circle {
+            @apply rounded-full;
+            clip-path: none;
+        }
+        .confetti.confetti-square {
+            @apply rounded-none;
+            clip-path: none;
         }
     </style>
 </head>
 <!-- Use h-dvh (dynamic viewport height) for better mobile support -->
-<body class="h-[100dvh] w-screen flex flex-col items-center py-2 select-none">
-
+<body class="h-[100dvh] w-screen flex flex-col items-center py-2 select-none overflow-hidden touch-none font-sans-mine bg-yellow-101 bg-(image:--bg-shapes)">
     <!-- Compact Header -->
     <div id="header-area" class="text-center z-10 flex flex-col items-center justify-center shrink-0 w-full px-4">
-        <h1 class="text-2xl md:text-4xl lg:text-5xl font-bold momoko-color drop-shadow-sm flex items-center justify-center gap-2 bg-white/80 px-6 py-2 rounded-full backdrop-blur-sm shadow-sm">
+        <h1 class="text-2xl md:text-4xl lg:text-5xl font-bold text-momoko drop-shadow-sm flex items-center justify-center gap-2 bg-white/80 px-6 py-2 rounded-full backdrop-blur-sm shadow-sm">
             <i class="fa-solid fa-shapes text-orange-400"></i>
             <span data-i18n="appName">Circle M@ster Momoko</span>
         </h1>
@@ -90,17 +73,17 @@
 
     <!-- Game Area (Auto-expanding) -->
     <div id="game-area" class="relative flex-grow flex items-center justify-center w-full px-2 my-2">
-        <div id="canvas-container" class="h-full min-h-[300px] w-auto max-w-full max-h-full aspect-square">
-            <canvas id="gameCanvas"></canvas>
+        <div id="canvas-container" class="relative h-full min-h-[300px] w-auto max-w-full max-h-full aspect-square bg-white shadow-xl-mine rounded-3xl transition-all duration-200 ease-out">
+            <canvas id="gameCanvas" class="cursor-crosshair"></canvas>
             
             <!-- Result Overlay -->
-            <div id="result-overlay" class="hidden absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full border-t border-orange-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] pb-6 pt-6 px-4 flex flex-col items-center justify-center gap-4 z-20">
+            <div id="result-overlay" class="hidden absolute bottom-0 w-full backdrop-blur-sm bg-white/95 border-t border-orange-100 rounded-b-3xl shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] pb-6 pt-6 px-4 flex flex-col items-center justify-center gap-4 z-20">
                 
                 <!-- Score Row -->
                 <div class="flex items-center justify-center gap-4 w-full">
                     <div class="flex flex-col items-center min-w-[100px]">
                         <span id="score-label" class="text-gray-400 text-xs uppercase tracking-widest font-bold" data-i18n="resultScoreLabel">Score</span>
-                        <span id="score" class="text-5xl font-black momoko-color leading-none" data-i18n="resultScoreDisplay" data-i18n-interpolation-data='{"count": 0}'>{{count}}%</span>
+                        <span id="score" class="text-5xl font-black text-momoko leading-none" data-i18n="resultScoreDisplay" data-i18n-interpolation-data='{"count": 0}'>{{count}}%</span>
                     </div>
                     
                     <div class="h-12 w-1 bg-orange-200 rounded-full"></div> 
@@ -120,7 +103,7 @@
                     </button>
                     
                     <!-- Retry Button -->
-                    <button onclick="resetGame()" class="flex-[2] momoko-bg text-white px-4 py-3 rounded-full font-bold hover:opacity-90 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
+                    <button onclick="resetGame()" class="flex-[2] bg-momoko text-white px-4 py-3 rounded-full font-bold hover:opacity-90 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
                         <i class="fa-solid fa-rotate-right text-xl"></i>
                         <span data-i18n="retry">もう一回</span>
                     </button>
@@ -492,9 +475,9 @@
             canvasSize = Math.max(300, maxDimension);
         } else {
             // We rely on the browser's layout engine to calculate available space
-            canvas.style.display = "none";
+            canvas.classList.add("hidden");
             canvasSize = container.offsetHeight;
-            canvas.style.display = "";
+            canvas.classList.remove("hidden");
         }
         
         // Update styling params
@@ -585,7 +568,7 @@
         isDrawing = true;
         points = [];
         resultOverlay.classList.add('hidden');
-        resultOverlay.classList.remove('animate-slide-up');
+        resultOverlay.classList.remove('animate-fade-in-and-slide-up');
         ctx.clearRect(0, 0, canvasSize, canvasSize);
         drawHint(); 
         
@@ -752,7 +735,7 @@
         messageDiv.className = `font-bold whitespace-normal break-words leading-tight text-lg md:text-xl ${colorClass}`;
         
         resultOverlay.classList.remove('hidden');
-        resultOverlay.classList.add('animate-slide-up');
+        resultOverlay.classList.add('animate-fade-in-and-slide-up');
     }
 
     function shareTwitter() {
@@ -771,7 +754,7 @@
         isDrawing = false;
         points = [];
         resultOverlay.classList.add('hidden');
-        resultOverlay.classList.remove('animate-slide-up');
+        resultOverlay.classList.remove('animate-fade-in-and-slide-up');
         ctx.clearRect(0, 0, canvasSize, canvasSize);
         drawHint();
     }
@@ -784,23 +767,18 @@
             const confetti = document.createElement('div');
             confetti.className = 'confetti';
             confetti.style.left = Math.random() * 100 + 'vw';
-            confetti.style.top = '-20px';
             confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
             confetti.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
             confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
             
-            let shape = 'triangle';
-            const r = Math.random();
+            let shapes = ['confetti-triangle'];
             if (score >= 100) {
-                if (r < 0.33) shape = 'circle';
-                else if (r < 0.66) shape = 'square';
+                shapes = ['confetti-circle', 'confetti-square', 'confetti-triangle'];
             } else if (score >= 90) {
-                if (r < 0.5) shape = 'square';
+                shapes = ['confetti-square', 'confetti-triangle'];
             }
-            
-            if (shape === 'triangle') confetti.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
-            else if (shape === 'circle') { confetti.style.borderRadius = '50%'; confetti.style.clipPath = 'none'; }
-            else if (shape === 'square') { confetti.style.borderRadius = '0'; confetti.style.clipPath = 'none'; }
+            const shape = shapes[Math.floor(Math.random() * shapes.length)];
+            confetti.classList.add(shape);
 
             document.body.appendChild(confetti);
             setTimeout(() => confetti.remove(), 3500);
