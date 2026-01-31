@@ -473,7 +473,7 @@
         const header = document.getElementById('header-area');
         const footer = document.getElementById('footer-area');
         
-        const I_PREFER_MY_STUPID_ANIMATION_OVER_CORRECTNESS = true;
+        const I_PREFER_MY_STUPID_ANIMATION_OVER_CORRECTNESS = false;
         if (I_PREFER_MY_STUPID_ANIMATION_OVER_CORRECTNESS) {
             // Calculate available space
             const windowWidth = window.innerWidth;
@@ -492,7 +492,7 @@
         } else {
             // We rely on the browser's layout engine to calculate available space
             canvas.style.display = "none";
-            canvasSize = container.offsetWidth;
+            canvasSize = container.offsetHeight;
             canvas.style.display = "";
         }
         
@@ -501,24 +501,20 @@
         lineWidthUser = Math.max(6, canvasSize * 0.02); 
         lineWidthGuide = lineWidthUser * 2;
 
-        const dpr = window.devicePixelRatio || 1;
-        const intendedImageSize = canvasSize * dpr;
         let resized = false;
-        if (canvas.width != intendedImageSize || canvas.height != intendedImageSize) {
-            canvas.width = intendedImageSize;
-            canvas.height = intendedImageSize;
+        if (canvas.width != canvasSize || canvas.height != canvasSize) {
+            canvas.width = canvasSize;
+            canvas.height = canvasSize;
             resized = true;
         }
         
+        // Set style dimensions
+        canvas.style.width = `${canvasSize}px`;
+        canvas.style.height = `${canvasSize}px`;
         if (I_PREFER_MY_STUPID_ANIMATION_OVER_CORRECTNESS) {
-            // Set style dimensions
-            canvas.style.width = `${canvasSize}px`;
-            canvas.style.height = `${canvasSize}px`;
             container.style.width = `${canvasSize}px`;
             container.style.height = `${canvasSize}px`;
         }
-
-        ctx.scale(dpr, dpr);
 
         if (resized) {
             if (!isDrawing && points.length >= MIN_POINT_COUNT) {
@@ -556,7 +552,7 @@
         }
         
         static fromCanvasPos(x, y) {
-            return new this(x / canvasSize, y / canvasSize);
+            return new this(x / canvas.width, y / canvas.height);
         }
         static fromCanvasClientPos(clientX, clientY) {
             const rect = canvas.getBoundingClientRect();
@@ -564,10 +560,10 @@
         }
         
         getOnCanvasX() {
-            return this.x * canvasSize;
+            return this.x * canvas.width;
         }
         getOnCanvasY() {
-            return this.y * canvasSize;
+            return this.y * canvas.height;
         }
     }
     function getPos(e) {
