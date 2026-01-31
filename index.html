@@ -767,6 +767,7 @@
         const colors = ['#EFB864', '#F8A5C2', '#60A5FA', '#FCD34D', '#FFFFFF']; // TODO: unhardcode these?
         const count = 100; 
         
+        const newConfettis = [];
         for (let i = 0; i < count; i++) {
             const confetti = document.createElement('div');
             confetti.className = 'confetti';
@@ -784,9 +785,10 @@
             const shape = shapes[Math.floor(Math.random() * shapes.length)];
             confetti.classList.add(shape);
 
+            newConfettis.push(confetti);
             confettiContainer.appendChild(confetti);
-            setTimeout(() => confetti.remove(), 3500);
         }
+        setTimeout(() => newConfettis.forEach(i => i.remove()), 3500);
     }
 
     init();
