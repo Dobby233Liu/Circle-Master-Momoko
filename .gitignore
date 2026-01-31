@@ -4,3 +4,4 @@ CMM-i18n.diff
 CMM-i18n.patch
 #git log fucked-up-line-endings~3..HEAD --reverse > log.txt
 log.txt
+CMM-index_old.html
