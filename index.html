@@ -31,6 +31,10 @@
             to { bottom: 0; --tw-rotate-z: rotateZ(720deg); }
         }
         
+        button[role="button"] {
+            @apply cursor-pointer;
+        }
+        
         .confetti {
             @apply absolute pointer-events-none w-[14px] h-[14px] bg-[#f00] animate-confetti-fall transform-gpu;
         }
@@ -61,7 +65,7 @@
                 トゲトゲなさんかくを、まあるくしてね。
             </p>
             <!-- Guide Button moved here to save vertical space -->
-            <button id="guide-toggle" onclick="toggleGuide()" class="bg-white text-gray-500 border border-gray-200 px-3 py-1 rounded-full text-xs md:text-sm font-bold shadow-sm hover:bg-orange-50 transition-colors flex items-center gap-2 active:scale-95">
+            <button role="button" id="guide-toggle" onclick="toggleGuide()" class="bg-white text-gray-500 border border-gray-200 px-3 py-1 rounded-full text-xs md:text-sm font-bold shadow-sm hover:bg-orange-50 transition-colors flex items-center gap-2 active:scale-95">
                 <i id="guide-toggle-icon" class="fa-regular fa-circle"></i>
                 <span id="guide-toggle-text" data-i18n="guideToggleLabel" data-i18n-context="off">ガイド: OFF</span>
             </button>
@@ -97,14 +101,14 @@
                 <!-- Action Buttons -->
                 <div class="flex w-full gap-3">
                     <!-- Twitter Button (Fixed Icon) -->
-                    <button onclick="shareTwitter()" class="flex-1 bg-black text-white px-4 py-3 rounded-full font-bold hover:opacity-80 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
+                    <button role="button" onclick="shareTwitter()" class="flex-1 bg-black text-white px-4 py-3 rounded-full font-bold hover:opacity-80 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
                         <!-- Used standard fa-twitter (bird) for guaranteed visibility -->
                         <i class="fa-brands fa-twitter text-xl text-white"></i>
                         <span data-i18n="shareTweet">Post</span>
                     </button>
                     
                     <!-- Retry Button -->
-                    <button onclick="resetGame()" class="flex-[2] bg-momoko text-white px-4 py-3 rounded-full font-bold hover:opacity-90 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
+                    <button role="button" onclick="resetGame()" class="flex-[2] bg-momoko text-white px-4 py-3 rounded-full font-bold hover:opacity-90 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
                         <i class="fa-solid fa-rotate-right text-xl"></i>
                         <span data-i18n="retry">もう一回</span>
                     </button>
