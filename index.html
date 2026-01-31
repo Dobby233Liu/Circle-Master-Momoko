@@ -574,6 +574,19 @@
         return Point.fromCanvasClientPos(clientX, clientY);
     }
 
+    let startDrawingDebounce = false;
+    let startDrawingDebounceTimer = null;
+    function startStartDrawingDebounce() {
+        endStartDrawingDebounce();
+        startDrawingDebounce = true;
+        startDrawingDebounceTimer = setTimeout(endStartDrawingDebounce, 50);
+    }
+    function endStartDrawingDebounce() {
+        startDrawingDebounce = false;
+        clearTimeout(startDrawingDebounceTimer);
+        startDrawingDebounceTimer = null;
+    }
+
     function setupBrush() {
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
@@ -583,8 +596,13 @@
     function clearCanvas() {
         ctx.clearRect(0, 0, canvasSize, canvasSize);
     }
+    
     function startDrawing(e) {
-        if (!resultOverlay.classList.contains('hidden')) resetGame();
+        if (!resultOverlay.classList.contains('hidden')) {
+            if (startDrawingDebounce) return;
+            resetGame();
+        }
+        endStartDrawingDebounce();
         isDrawing = true;
         points = [];
         resultOverlay.classList.add('hidden');
@@ -656,6 +674,7 @@
         let score = Math.round(rawScore);
         score = Math.max(0, Math.min(100, score));
 
+        startStartDrawingDebounce();
         showResult(score, centerX, centerY, avgRadius);
     }
 
@@ -757,6 +776,7 @@
     }
 
     function resetGame() {
+        endStartDrawingDebounce();
         isDrawing = false;
         points = [];
         resultOverlay.classList.add('hidden');
