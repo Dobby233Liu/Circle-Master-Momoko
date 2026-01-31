@@ -7,7 +7,7 @@
     <!-- Tailwind CSS -->
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <!-- FontAwesome (latest) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
     <script src="https://unpkg.com/i18next@25.8.0/dist/umd/i18next.min.js"></script>
     <script src="https://unpkg.com/i18next-browser-languagedetector@8.2.0/dist/umd/i18nextBrowserLanguageDetector.min.js"></script>
     <style type="text/tailwindcss">
@@ -27,11 +27,12 @@
         }
         
         @keyframes fall {
-            to { transform: translateY(100vh) rotate(720deg); }
+            from { bottom: calc(100% + 20px); }
+            to { bottom: 0; --tw-rotate-z: rotateZ(720deg); }
         }
         
         .confetti {
-            @apply absolute top-[-20px] pointer-events-none w-[14px] h-[14px] bg-[#f00] z-100 animate-confetti-fall transform-gpu;
+            @apply absolute pointer-events-none w-[14px] h-[14px] bg-[#f00] animate-confetti-fall transform-gpu;
         }
         .confetti.confetti-triangle {
             @apply rounded-none;
@@ -116,6 +117,8 @@
     <div id="footer-area" class="mt-auto text-gray-400 text-xs md:text-sm text-center bg-white/60 px-6 py-1 rounded-full backdrop-blur-sm font-bold z-10 shrink-0" data-i18n="acceptedInputTypes">
         <i class="fa-solid fa-computer-mouse mr-1"></i>マウス / <i class="fa-solid fa-fingerprint mx-1"></i>指で描いてね
     </div>
+    
+    <div id="confetti-container" class="absolute top-0 left-0 pointer-events-none z-100 w-screen h-screen"></div>
 
 <script type="application/json" id="i18n-resources">
 {
@@ -759,6 +762,7 @@
         drawHint();
     }
     
+    const confettiContainer = document.getElementById("confetti-container");
     function triggerConfetti(score) {
         const colors = ['#EFB864', '#F8A5C2', '#60A5FA', '#FCD34D', '#FFFFFF']; // TODO: unhardcode these?
         const count = 100; 
@@ -769,7 +773,7 @@
             confetti.style.left = Math.random() * 100 + 'vw';
             confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
             confetti.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
-            confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+            confetti.style.setProperty("--tw-rotate-z", `rotateZ(${Math.random() * 360}deg)`);
             
             let shapes = ['confetti-triangle'];
             if (score >= 100) {
@@ -780,7 +784,7 @@
             const shape = shapes[Math.floor(Math.random() * shapes.length)];
             confetti.classList.add(shape);
 
-            document.body.appendChild(confetti);
+            confettiContainer.appendChild(confetti);
             setTimeout(() => confetti.remove(), 3500);
         }
     }
