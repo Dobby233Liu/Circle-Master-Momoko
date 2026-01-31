@@ -359,7 +359,7 @@
     function onI18nAttrChanged(records) {
         const elems = new Set();
         for (const record of records) {
-            if (I18N_ATTRS.contains(record.attributeName))
+            if (I18N_ATTRS.includes(record.attributeName))
                 elems.add(record.target);
         }
         for (const elem of elems)
@@ -386,6 +386,7 @@
     const TRUE_SUPPORTED_LANGS = ["ja", "zh-Hans", "en"];
     
     i18next.use(i18nextBrowserLanguageDetector);
+    i18next.on("initialized", onI18nLoaded);
     i18next.on("loaded", onI18nLoaded);
     async function initI18n() {
         await i18next.init({
