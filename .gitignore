@@ -1,1 +1,4 @@
 .zed/
+makediff.bat
+CMM-i18n.diff
+CMM-i18n.patch
