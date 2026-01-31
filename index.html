@@ -29,8 +29,10 @@
             to { bottom: 0; --tw-rotate-z: rotateZ(720deg); }
         }
         
-        [role="button"] {
-            @apply cursor-pointer;
+        @layer base {
+            [role="button"]:not(:disabled) {
+                @apply cursor-pointer;
+            }
         }
         
         #gameCanvas.game-canvas-downscaled {
