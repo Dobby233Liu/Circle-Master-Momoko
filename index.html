@@ -35,7 +35,7 @@
             @apply cursor-pointer;
         }
         
-        #gameCanvas {
+        #gameCanvas.game-canvas-downscaled {
             image-rendering: pixelated;
         }
         
@@ -514,8 +514,12 @@
             container.style.height = `${canvasSize}px`;
         }
 
-        if (dpr > 1)
+        if (dpr > 1) {
             ctx.scale(dpr, dpr);
+            canvas.classList.add("game-canvas-downscaled");
+        } else {
+            canvas.classList.remove("game-canvas-downscaled");
+        }
         
         if (resized) {
             if (!isDrawing && points.length >= MIN_POINT_COUNT) {
