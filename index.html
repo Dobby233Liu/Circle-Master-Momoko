@@ -18,7 +18,7 @@
             --color-momoko: #EFB864;
             --shadow-xl-mine: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
             --animate-fade-in-and-slide-up: fade-in-and-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            --animate-confetti-fall: fall linear forwards;
+            --animate-confetti-fall: confetti-fall linear forwards;
         }
         
         @keyframes fade-in-and-slide-up {
@@ -26,7 +26,7 @@
             to { opacity: 1; transform: translate3d(0, 0, 0); }
         }
         
-        @keyframes fall {
+        @keyframes confetti-fall {
             from { bottom: calc(100% + 20px); }
             to { bottom: 0; --tw-rotate-z: rotateZ(720deg); }
         }
