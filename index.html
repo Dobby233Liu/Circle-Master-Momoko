@@ -29,9 +29,6 @@
             border-radius: 1.5rem;
             cursor: crosshair;
             transition: all 0.2s ease-out;
-            /* Ensure it doesn't overflow */
-            max-width: 100%;
-            max-height: 100%;
         }
 
         #result-overlay {
@@ -70,7 +67,7 @@
 <body class="h-[100dvh] w-screen flex flex-col items-center py-2 select-none">
 
     <!-- Compact Header -->
-    <div id="header-area" class="text-center z-10 flex flex-col items-center justify-center shrink-0 w-full px-4 mb-2">
+    <div id="header-area" class="text-center z-10 flex flex-col items-center justify-center shrink-0 w-full px-4">
         <h1 class="text-2xl md:text-4xl lg:text-5xl font-bold momoko-color drop-shadow-sm flex items-center justify-center gap-2 bg-white/80 px-6 py-2 rounded-full backdrop-blur-sm shadow-sm">
             <i class="fa-solid fa-shapes text-orange-400"></i>
             <span data-i18n="appName">Circle M@ster Momoko</span>
@@ -92,8 +89,8 @@
     </div>
 
     <!-- Game Area (Auto-expanding) -->
-    <div id="game-area" class="relative flex-grow flex items-center justify-center w-full px-2">
-        <div id="canvas-container">
+    <div id="game-area" class="relative flex-grow flex items-center justify-center w-full px-2 my-2">
+        <div id="canvas-container" class="h-full min-h-[300px] w-auto max-w-full max-h-full aspect-square">
             <canvas id="gameCanvas"></canvas>
             
             <!-- Result Overlay -->
@@ -133,7 +130,7 @@
     </div>
 
     <!-- Minimal Footer Guide -->
-    <div id="footer-area" class="mt-2 text-gray-400 text-xs md:text-sm text-center bg-white/60 px-6 py-1 rounded-full backdrop-blur-sm font-bold z-10 shrink-0" data-i18n="acceptedInputTypes">
+    <div id="footer-area" class="mt-auto text-gray-400 text-xs md:text-sm text-center bg-white/60 px-6 py-1 rounded-full backdrop-blur-sm font-bold z-10 shrink-0" data-i18n="acceptedInputTypes">
         <i class="fa-solid fa-computer-mouse mr-1"></i>マウス / <i class="fa-solid fa-fingerprint mx-1"></i>指で描いてね
     </div>
 
@@ -388,21 +385,23 @@
     
     const TRUE_SUPPORTED_LANGS = ["ja", "zh-Hans", "en"];
     
-    i18next.use(i18nextBrowserLanguageDetector).init({
-        supportedLngs: ["ja", "zh-Hans", "zh-CN", "zh", "en"],
-        fallbackLng: {
-            zh: ["zh-Hans", "ja"],
-            "zh-CN": ["zh-Hans", "ja"],
-            default: ["ja"]
-        },
-        detection: {
-            order: ["querystring", "navigator"],
-            lookupQuerystring: "lang"
-        },
-        resources: JSON.parse(document.getElementById('i18n-resources').innerText)
-    }).then(onI18nLoaded);
-    // i18next.on("initialized", onI18nLoaded);
+    i18next.use(i18nextBrowserLanguageDetector);
     i18next.on("loaded", onI18nLoaded);
+    async function initI18n() {
+        await i18next.init({
+            supportedLngs: ["ja", "zh-Hans", "zh-CN", "zh", "en"],
+            fallbackLng: {
+                zh: ["zh-Hans", "ja"],
+                "zh-CN": ["zh-Hans", "ja"],
+                default: ["ja"]
+            },
+            detection: {
+                order: ["querystring", "navigator"],
+                lookupQuerystring: "lang"
+            },
+            resources: JSON.parse(document.getElementById('i18n-resources').innerText)
+        });
+    }
 
     const canvas = document.getElementById('gameCanvas');
     const container = document.getElementById('canvas-container');
@@ -429,7 +428,9 @@
     let lineWidthGuide = 24;
     const THICKNESS_RATIO = 0.10; 
 
-    function init() {
+    async function init() {
+        await initI18n();
+        
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
         
@@ -472,20 +473,28 @@
         const header = document.getElementById('header-area');
         const footer = document.getElementById('footer-area');
         
-        // Calculate available space
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
-        
-        // Subtract vertical UI elements + vertical margins + body padding
-        const uiHeight = header.offsetHeight + footer.offsetHeight + 16 + 16;
-        const availableHeight = windowHeight - uiHeight;
-        
-        // Determine the maximum possible square size
-        // We allow it to go much larger now (up to 800px or 95% of screen)
-        const maxDimension = Math.min(windowWidth - 24, availableHeight);
-        
-        // Clamp min size
-        canvasSize = Math.max(300, maxDimension);
+        const I_PREFER_MY_STUPID_ANIMATION_OVER_CORRECTNESS = true;
+        if (I_PREFER_MY_STUPID_ANIMATION_OVER_CORRECTNESS) {
+            // Calculate available space
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            
+            // Subtract vertical UI elements + vertical margins + body padding
+            const uiHeight = header.offsetHeight + footer.offsetHeight + 16 + 16;
+            const availableHeight = windowHeight - uiHeight;
+            
+            // Determine the maximum possible square size
+            // We allow it to go much larger now (up to 800px or 95% of screen)
+            const maxDimension = Math.min(windowWidth - 24, availableHeight);
+            
+            // Clamp min size
+            canvasSize = Math.max(300, maxDimension);
+        } else {
+            // We rely on the browser's layout engine to calculate available space
+            canvas.style.display = "none";
+            canvasSize = container.offsetWidth;
+            canvas.style.display = "";
+        }
         
         // Update styling params
         // Adjusted: Made the lines thinner relative to canvas size for a cleaner look
@@ -501,11 +510,13 @@
             resized = true;
         }
         
-        // Set style dimensions
-        canvas.style.width = `${canvasSize}px`;
-        canvas.style.height = `${canvasSize}px`;
-        container.style.width = `${canvasSize}px`;
-        container.style.height = `${canvasSize}px`;
+        if (I_PREFER_MY_STUPID_ANIMATION_OVER_CORRECTNESS) {
+            // Set style dimensions
+            canvas.style.width = `${canvasSize}px`;
+            canvas.style.height = `${canvasSize}px`;
+            container.style.width = `${canvasSize}px`;
+            container.style.height = `${canvasSize}px`;
+        }
 
         ctx.scale(dpr, dpr);
 
