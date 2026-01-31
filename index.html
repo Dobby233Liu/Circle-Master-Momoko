@@ -22,8 +22,8 @@
         }
         
         @keyframes fade-in-and-slide-up {
-            from { opacity: 0; transform: translate(0, 100%); }
-            to { opacity: 1; transform: translate(0, 0); }
+            from { opacity: 0; transform: translate3d(0, 100%, 0); }
+            to { opacity: 1; transform: translate3d(0, 0, 0); }
         }
         
         @keyframes fall {
@@ -84,8 +84,8 @@
         </div>
     
         <!-- Game Area (Auto-expanding) -->
-        <div id="game-area" class="relative flex-grow flex items-center justify-center max-w-full my-2 px-6">
-            <div id="canvas-container" class="relative h-full min-h-[300px] w-auto max-w-full max-h-full aspect-square bg-white shadow-xl-mine rounded-3xl transition-all duration-200 ease-out">
+        <div id="game-area" class="relative flex-grow flex items-center justify-center max-w-full my-2 mx-6 shadow-xl-mine rounded-3xl">
+            <div id="canvas-container" class="relative h-full min-h-[300px] w-auto max-w-full max-h-full aspect-square bg-white rounded-3xl transition-all duration-200 ease-out overflow-hidden">
                 <canvas id="gameCanvas" class="cursor-crosshair"></canvas>
                 
                 <!-- Result Overlay -->
