@@ -57,76 +57,77 @@
     </style>
 </head>
 <!-- Use h-dvh (dynamic viewport height) for better mobile support -->
-<body class="h-[100dvh] w-screen flex flex-col items-center py-2 select-none overflow-hidden touch-none font-sans-mine bg-yellow-101 bg-(image:--bg-shapes)">
-    <!-- Compact Header -->
-    <div id="header-area" class="text-center z-10 flex flex-col items-center justify-center shrink-0 w-full px-4">
-        <h1 class="text-2xl md:text-4xl lg:text-5xl font-bold text-momoko drop-shadow-sm flex items-center justify-center gap-2 bg-white/80 px-6 py-2 rounded-full backdrop-blur-sm shadow-sm">
-            <i class="fa-solid fa-shapes text-orange-400"></i>
-            <span data-i18n="appName">Circle M@ster Momoko</span>
-        </h1>
-        <div class="flex items-center gap-4 mt-2">
-            <p class="text-gray-500 text-xs md:text-sm bg-white/60 px-3 py-1 rounded-md font-bold" data-i18n="gameObjective">
-                トゲトゲなさんかくを、まあるくしてね。
-            </p>
-            <!-- Guide Button moved here to save vertical space -->
-            <button role="button" id="guide-toggle" onclick="toggleGuide()" class="bg-white text-gray-500 border border-gray-200 px-3 py-1 rounded-full text-xs md:text-sm font-bold shadow-sm hover:bg-orange-50 transition-colors flex items-center gap-2 active:scale-95">
-                <i id="guide-toggle-icon" class="fa-regular fa-circle"></i>
-                <span id="guide-toggle-text" data-i18n="guideToggleLabel" data-i18n-context="off">ガイド: OFF</span>
-            </button>
-            <span class="bg-white text-gray-500 border border-gray-200 px-3 py-1 rounded-full text-xs md:text-sm font-bold shadow-sm flex items-center gap-1">
-                <label for="language-selector" data-i18n="languageSelectorLabel">言語：</label>
-                <select id="language-selector" disabled="true" required></select>
-            </span>
+<body class="w-screen select-none overflow-auto overflow-x-hidden font-sans-mine bg-yellow-101 bg-(image:--bg-shapes)">
+    <div id="confetti-container" class="fixed top-0 left-0 pointer-events-none z-100 w-dvw h-dvh"></div>
+
+    <div class="w-full h-dvh flex flex-col items-center py-2">
+        <!-- Compact Header -->
+        <div id="header-area" class="text-center z-10 flex flex-col items-center justify-center shrink-0">
+            <h1 class="text-2xl md:text-4xl lg:text-5xl font-bold text-momoko drop-shadow-sm flex items-center justify-center gap-2 bg-white/80 px-6 py-2 rounded-full backdrop-blur-sm shadow-sm">
+                <i class="fa-solid fa-shapes text-orange-400"></i>
+                <span data-i18n="appName">Circle M@ster Momoko</span>
+            </h1>
+            <div class="flex items-center gap-4 mt-2">
+                <p class="text-gray-500 text-xs md:text-sm bg-white/60 px-3 py-1 rounded-md font-bold" data-i18n="gameObjective">
+                    トゲトゲなさんかくを、まあるくしてね。
+                </p>
+                <!-- Guide Button moved here to save vertical space -->
+                <button role="button" id="guide-toggle" onclick="toggleGuide()" class="bg-white text-gray-500 border border-gray-200 px-3 py-1 rounded-full text-xs md:text-sm font-bold shadow-sm hover:bg-orange-50 transition-colors flex items-center gap-2 active:scale-95">
+                    <i id="guide-toggle-icon" class="fa-regular fa-circle"></i>
+                    <span id="guide-toggle-text" data-i18n="guideToggleLabel" data-i18n-context="off">ガイド: OFF</span>
+                </button>
+                <span class="bg-white text-gray-500 border border-gray-200 px-3 py-1 rounded-full text-xs md:text-sm font-bold shadow-sm flex items-center gap-1">
+                    <label for="language-selector" data-i18n="languageSelectorLabel">言語：</label>
+                    <select id="language-selector" disabled="true" required></select>
+                </span>
+            </div>
         </div>
-    </div>
-
-    <!-- Game Area (Auto-expanding) -->
-    <div id="game-area" class="relative flex-grow flex items-center justify-center w-full px-2 my-2">
-        <div id="canvas-container" class="relative h-full min-h-[300px] w-auto max-w-full max-h-full aspect-square bg-white shadow-xl-mine rounded-3xl transition-all duration-200 ease-out">
-            <canvas id="gameCanvas" class="cursor-crosshair"></canvas>
-            
-            <!-- Result Overlay -->
-            <div id="result-overlay" class="hidden absolute bottom-0 w-full backdrop-blur-sm bg-white/95 border-t border-orange-100 rounded-b-3xl shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] pb-6 pt-6 px-4 flex flex-col items-center justify-center gap-4 z-20">
+    
+        <!-- Game Area (Auto-expanding) -->
+        <div id="game-area" class="relative flex-grow flex items-center justify-center max-w-full my-2">
+            <div id="canvas-container" class="relative h-full min-h-[300px] w-auto max-w-full max-h-full aspect-square bg-white shadow-xl-mine rounded-3xl transition-all duration-200 ease-out">
+                <canvas id="gameCanvas" class="cursor-crosshair"></canvas>
                 
-                <!-- Score Row -->
-                <div class="flex items-center justify-center gap-4 w-full">
-                    <div class="flex flex-col items-center min-w-[100px]">
-                        <span id="score-label" class="text-gray-400 text-xs uppercase tracking-widest font-bold" data-i18n="resultScoreLabel">Score</span>
-                        <span id="score" class="text-5xl font-black text-momoko leading-none" data-i18n="resultScoreDisplay" data-i18n-interpolation-data='{"count": 0}'>{{count}}%</span>
+                <!-- Result Overlay -->
+                <div id="result-overlay" class="hidden absolute bottom-0 w-full backdrop-blur-sm bg-white/95 border-t border-orange-100 rounded-b-3xl shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] pb-6 pt-6 px-4 flex flex-col items-center justify-center gap-4 z-20">
+                    <!-- Score Row -->
+                    <div class="flex items-center justify-center gap-4 w-full">
+                        <div class="flex flex-col items-center min-w-[100px]">
+                            <span id="score-label" class="text-gray-400 text-xs uppercase tracking-widest font-bold" data-i18n="resultScoreLabel">Score</span>
+                            <span id="score" class="text-5xl font-black text-momoko leading-none" data-i18n="resultScoreDisplay" data-i18n-interpolation-data='{"count": 0}'>{{count}}%</span>
+                        </div>
+                        
+                        <div class="h-12 w-1 bg-orange-200 rounded-full"></div> 
+    
+                        <div class="flex flex-col items-start justify-center flex-grow">
+                            <div id="message" class="text-gray-600 font-bold leading-tight w-full text-left text-lg"></div>
+                        </div>
                     </div>
-                    
-                    <div class="h-12 w-1 bg-orange-200 rounded-full"></div> 
-
-                    <div class="flex flex-col items-start justify-center flex-grow">
-                         <div id="message" class="text-gray-600 font-bold leading-tight w-full text-left text-lg"></div>
+    
+                    <!-- Action Buttons -->
+                    <div class="flex w-full gap-3">
+                        <!-- Twitter Button (Fixed Icon) -->
+                        <button role="button" onclick="shareTwitter()" class="flex-1 bg-black text-white px-4 py-3 rounded-full font-bold hover:opacity-80 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
+                            <!-- Used standard fa-twitter (bird) for guaranteed visibility -->
+                            <i class="fa-brands fa-twitter text-xl text-white"></i>
+                            <span data-i18n="shareTweet">Post</span>
+                        </button>
+                        
+                        <!-- Retry Button -->
+                        <button role="button" onclick="resetGame()" class="flex-[2] bg-momoko text-white px-4 py-3 rounded-full font-bold hover:opacity-90 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-rotate-right text-xl"></i>
+                            <span data-i18n="retry">もう一回</span>
+                        </button>
                     </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="flex w-full gap-3">
-                    <!-- Twitter Button (Fixed Icon) -->
-                    <button role="button" onclick="shareTwitter()" class="flex-1 bg-black text-white px-4 py-3 rounded-full font-bold hover:opacity-80 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
-                        <!-- Used standard fa-twitter (bird) for guaranteed visibility -->
-                        <i class="fa-brands fa-twitter text-xl text-white"></i>
-                        <span data-i18n="shareTweet">Post</span>
-                    </button>
-                    
-                    <!-- Retry Button -->
-                    <button role="button" onclick="resetGame()" class="flex-[2] bg-momoko text-white px-4 py-3 rounded-full font-bold hover:opacity-90 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-rotate-right text-xl"></i>
-                        <span data-i18n="retry">もう一回</span>
-                    </button>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Minimal Footer Guide -->
-    <div id="footer-area" class="mt-auto text-gray-400 text-xs md:text-sm text-center bg-white/60 px-6 py-1 rounded-full backdrop-blur-sm font-bold z-10 shrink-0" data-i18n="acceptedInputTypes">
-        <i class="fa-solid fa-computer-mouse mr-1"></i>マウス / <i class="fa-solid fa-fingerprint mx-1"></i>指で描いてね
-    </div>
     
-    <div id="confetti-container" class="absolute top-0 left-0 pointer-events-none z-100 w-screen h-screen"></div>
+        <!-- Minimal Footer Guide -->
+        <div id="footer-area" class="mt-auto text-gray-400 text-xs md:text-sm text-center bg-white/60 px-6 py-1 rounded-full backdrop-blur-sm font-bold z-10 shrink-0" data-i18n="acceptedInputTypes">
+            <i class="fa-solid fa-computer-mouse mr-1"></i>マウス / <i class="fa-solid fa-fingerprint mx-1"></i>指で描いてね
+        </div>
+    </div>
 
 <script type="application/json" id="i18n-resources">
 {
