@@ -436,6 +436,7 @@
         
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
+        canvas.addEventListener("contextrestored", drawFullFrame);
         
         // Mouse
         canvas.addEventListener('mousedown', startDrawing);
@@ -524,17 +525,21 @@
         }
         
         if (resized) {
-            if (!isDrawing && points.length >= MIN_POINT_COUNT) {
-                setupBrush();
-                showResultGraphics();
-            } else {
-                drawHint();
-                setupBrush();
-                drawUserPainting(true);
-            }
+            drawFullFrame();
         }
     }
 
+    function drawFullFrame() {
+        if (!isDrawing && points.length >= MIN_POINT_COUNT) {
+            setupBrush();
+            showResultGraphics();
+        } else {
+            drawHint();
+            setupBrush();
+            drawUserPainting(true);
+        }
+    }
+    
     function drawHint(results) {
         if (isGuideMode) {
             ctx.beginPath();
