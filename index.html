@@ -371,11 +371,14 @@
             return;
         }
         elem.dataset.i18n = key;
-        elem.dataset.i18nContext = options?.context;
-        if (!options?.interpolation)
-            delete elem.dataset.i18nInterpolationData;
+        if (options?.context)
+            elem.dataset.i18nContext = options?.context;
         else
+            delete elem.dataset.i18nContext;
+        if (options?.interpolation)
             elem.dataset.i18nInterpolationData = JSON.stringify(options.interpolation);
+        else
+            delete elem.dataset.i18nInterpolationData;
     }
     
     const TRUE_SUPPORTED_LANGS = ["ja", "zh-Hans", "en"];
