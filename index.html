@@ -443,10 +443,7 @@
         canvas.addEventListener('pointerdown', startDrawing);
         canvas.addEventListener('pointermove', draw);
         canvas.addEventListener('pointerup', endDrawing);
-        canvas.addEventListener('pointercancel', (ev) => {
-            if (isDrawing)
-                endDrawing(ev);
-        });
+        canvas.addEventListener('pointerout', endDrawing);
     }
 
     function toggleGuide() {
