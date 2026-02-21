@@ -670,7 +670,6 @@
         let score = Math.round(rawScore);
         score = Math.max(0, Math.min(100, score));
 
-        startStartDrawingDebounce();
         showResult(score, centerX, centerY, avgRadius);
     }
 
@@ -716,6 +715,7 @@
     
     function showResult(score, cx, cy, r) {
         currentScore = score;
+        startStartDrawingDebounce();
 
         showResultGraphics(cx, cy, r);
 
