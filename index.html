@@ -547,13 +547,13 @@
             this.y = y;
         }
         
-        static fromScreenPos(x, y) {
+        static fromPhysicalCanvasPos(x, y) {
             return new this(x / canvasSize, y / canvasSize);
         }
         
         static fromPointerEvent({ clientX, clientY }) {
             const rect = canvas.getBoundingClientRect();
-            return this.fromScreenPos(clientX - rect.left, clientY - rect.top);
+            return this.fromPhysicalCanvasPos(clientX - rect.left, clientY - rect.top);
         }
         
         toCanvasPos() {
