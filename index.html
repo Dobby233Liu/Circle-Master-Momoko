@@ -439,22 +439,14 @@
         window.addEventListener('resize', resizeCanvas);
         canvas.addEventListener("contextrestored", redrawCanvas);
         
-        // Mouse
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', endDrawing);
-        canvas.addEventListener('mouseleave', () => { if (isDrawing) endDrawing(); });
-
-        // Touch
-        canvas.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            startDrawing(e);
-        }, { passive: false });
-        canvas.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            draw(e);
-        }, { passive: false });
-        canvas.addEventListener('touchend', endDrawing);
+        // Pointer events
+        canvas.addEventListener('pointerdown', startDrawing);
+        canvas.addEventListener('pointermove', draw);
+        canvas.addEventListener('pointerup', endDrawing);
+        canvas.addEventListener('pointercancel', (ev) => {
+            if (isDrawing)
+                endDrawing(ev);
+        });
     }
 
     function toggleGuide() {
@@ -562,10 +554,7 @@
             return new this(x / canvasSize, y / canvasSize);
         }
         
-        static fromInputEvent(ev) {
-            // single touch only
-            const clientX = ev.touches ? ev.touches[0].clientX : ev.clientX;
-            const clientY = ev.touches ? ev.touches[0].clientY : ev.clientY;
+        static fromPointerEvent({ clientX, clientY }) {
             const rect = canvas.getBoundingClientRect();
             return this.fromScreenPos(clientX - rect.left, clientY - rect.top);
         }
@@ -598,7 +587,11 @@
         ctx.clearRect(0, 0, canvasSize, canvasSize);
     }
     
+    let currentPointer = -1;
+    
     function startDrawing(e) {
+        currentPointer = e.pointerId;
+        
         if (!resultOverlay.classList.contains('hidden')) {
             if (startDrawingDebounce) return;
             resetGame();
@@ -613,21 +606,25 @@
         
         setupUserBrush();
         ctx.beginPath();
-        const pos = CircleGamePoint.fromInputEvent(e);
+        const pos = CircleGamePoint.fromPointerEvent(e);
         points.push(pos);
         ctx.moveTo(...pos.toCanvasPos());
     }
 
     function draw(e) {
         if (!isDrawing) return;
-        const pos = CircleGamePoint.fromInputEvent(e);
+        if (currentPointer != e.pointerId) return;
+        
+        const pos = CircleGamePoint.fromPointerEvent(e);
         points.push(pos);
         ctx.lineTo(...pos.toCanvasPos());
         ctx.stroke();
     }
 
-    function endDrawing() {
+    function endDrawing(ev) {
         if (!isDrawing) return;
+        if (currentPointer != ev.pointerId) return;
+        
         isDrawing = false;
         if (points.length < MIN_POINT_COUNT) return;
         evaluateCircle();
