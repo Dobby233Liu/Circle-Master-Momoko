@@ -475,11 +475,12 @@
 
     function resizeCanvas() {
         const gameArea = document.getElementById('game-area');
-        const header = document.getElementById('header-area');
-        const footer = document.getElementById('footer-area');
         
         const I_PREFER_MY_STUPID_ANIMATION_OVER_CORRECTNESS = false;
         if (I_PREFER_MY_STUPID_ANIMATION_OVER_CORRECTNESS) {
+            const header = document.getElementById('header-area');
+            const footer = document.getElementById('footer-area');
+            
             // Calculate available space
             const windowDims = document.documentElement.getBoundingClientRect();
             
