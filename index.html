@@ -76,7 +76,7 @@
                     トゲトゲなさんかくを、まあるくしてね。
                 </p>
                 <!-- Guide Button moved here to save vertical space -->
-                <button type="button" id="guide-toggle" onclick="toggleGuide()" class="bg-white border border-gray-200 px-3 py-1 rounded-full font-bold shadow-xs hover:bg-orange-50 transition-colors active:scale-95">
+                <button type="button" id="guide-toggle" class="bg-white border border-gray-200 px-3 py-1 rounded-full font-bold shadow-xs hover:bg-orange-50 transition-colors active:scale-95">
                     <i id="guide-toggle-icon" class="fa-regular fa-circle mr-1"></i>
                     <span id="guide-toggle-text" data-i18n="guideToggleLabel" data-i18n-context="off">ガイド: OFF</span>
                 </button>
@@ -108,14 +108,14 @@
                 <!-- Action Buttons -->
                 <div class="flex w-full gap-3">
                     <!-- Twitter Button (Fixed Icon) -->
-                    <button type="button" onclick="shareTwitter()" class="flex-1 bg-black text-white px-4 py-3 rounded-full font-bold hover:opacity-80 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
+                    <button type="button" id="share-on-twitter" class="flex-1 bg-black text-white px-4 py-3 rounded-full font-bold hover:opacity-80 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
                         <!-- Used standard fa-twitter (bird) for guaranteed visibility -->
                         <i class="fa-brands fa-twitter text-xl text-white"></i>
                         <span data-i18n="shareTweet">Post</span>
                     </button>
                     
                     <!-- Retry Button -->
-                    <button type="button" onclick="resetGame()" class="flex-[2] bg-momoko text-white px-4 py-3 rounded-full font-bold hover:opacity-90 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
+                    <button type="button" id="reset-game" class="flex-[2] bg-momoko text-white px-4 py-3 rounded-full font-bold hover:opacity-90 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
                         <i class="fa-solid fa-rotate-right text-xl"></i>
                         <span data-i18n="retry">もう一回</span>
                     </button>
@@ -427,7 +427,9 @@
     const THICKNESS_RATIO = 0.10; 
 
     async function init() {
-        await initI18n();
+        guideBtn.addEventListener("click", toggleGuide);
+        document.getElementById("share-on-twitter").addEventListener("click", shareTwitter);
+        document.getElementById("reset-game").addEventListener("click", resetGame);
         
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
@@ -438,6 +440,8 @@
         canvas.addEventListener('pointermove', draw);
         canvas.addEventListener('pointerup', endDrawing);
         canvas.addEventListener('pointerout', endDrawing);
+        
+        await initI18n();
     }
 
     function toggleGuide() {
