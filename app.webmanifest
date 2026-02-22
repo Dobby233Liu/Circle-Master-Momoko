@@ -1,0 +1,32 @@
+{
+    "name": "Circle M@ster Momoko",
+    "categories": ["games"],
+    "start_url": "./",
+    "display": "standalone",
+    "orientation": "natural",
+    "theme_color": "#efb864",
+    "background_color": "#ffeec2",
+    "icons": [
+        {
+            "src": "favicon.svg",
+            "type": "image/svg"
+        },
+        {
+            "src": "favicon-192x.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "favicon-512x.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "ScreenShot.png",
+            "type": "image/png",
+            "form_factor": "wide"
+        }
+    ]
+}
