@@ -2,8 +2,18 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title data-i18n="appName">Circle M@ster Momoko</title>
+    <meta property="og:title" content="Circle M@ster Momoko" />
+    <meta property="og:image" content="ScreenShot.png" />
+    <meta property="og:description" content="トゲトゲなさんかくを、まあるくしてね。" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:locale:alternate" content="zh_CN" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://m-masaki72.github.io/Circle-Master-Momoko/" />
+    <meta name="theme-color" content="#ffeec2" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="color-scheme" content="normal" />
     <!-- FontAwesome (latest) -->
     <link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'" />
     <script src="https://unpkg.com/i18next@25.8.0/dist/umd/i18next.min.js" defer></script>
@@ -380,6 +390,7 @@
             delete elem.dataset.i18nInterpolationData;
     }
     
+    // can't obtain anything like this from i18next
     const TRUE_SUPPORTED_LANGS = ["ja", "zh-Hans", "en"];
     async function initI18n() {
         i18next.use(i18nextBrowserLanguageDetector);
