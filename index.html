@@ -24,8 +24,7 @@
             --font-sans-mine: 'Helvetica Neue', Arial, var(--font-sans);
             --color-yellow-101: #ffeec2;
             --bg-shapes: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 60 60"><g fill="%23ffffff" fill-opacity=".6" fill-rule="evenodd"><path d="M10 10h10v10H10z"/><circle cx="40" cy="40" r="5"/><path d="m40 10 5 10H35zM10 40h10v10H10zm15 10 5 10H20z"/><circle cx="50" cy="20" r="3"/></g></svg>');
-            --color-momoko: #EFB864;
-            --shadow-xl-mine: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --color-momoko: #efb864;
             --animate-fade-in-and-slide-up: fade-in-and-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             --animate-confetti-fall: confetti-fall linear forwards;
         }
@@ -47,8 +46,17 @@
         }
         
         @layer components {
+            .header-button {
+                @apply bg-white border border-gray-200 px-3 py-1 rounded-full font-bold shadow-xs hover:bg-orange-50 transition-colors active:scale-95;
+            }
+            
             #gameCanvas.game-canvas-downscaled {
                 image-rendering: pixelated;
+            }
+            
+            .result-button {
+                @apply flex items-center justify-center gap-2 px-4 py-3 rounded-full shadow-md text-lg text-white;
+                @apply transform transition-transform hover:opacity-90 transition-opacity active:scale-95;
             }
             
             .confetti {
@@ -87,11 +95,11 @@
                     トゲトゲなさんかくを、まあるくしてね。
                 </p>
                 <!-- Guide Button moved here to save vertical space -->
-                <button type="button" id="guide-toggle" class="bg-white border border-gray-200 px-3 py-1 rounded-full font-bold shadow-xs hover:bg-orange-50 transition-colors active:scale-95">
+                <button type="button" id="guide-toggle" class="header-button">
                     <i id="guide-toggle-icon" class="fa-regular fa-circle mr-1"></i>
                     <span id="guide-toggle-text" data-i18n="guideToggleLabel" data-i18n-context="off">ガイド: OFF</span>
                 </button>
-                <span class="bg-white border border-gray-200 px-3 py-1 rounded-full font-bold shadow-xs hover:bg-orange-50 transition-colors">
+                <span class="header-button active:scale-none">
                     <label for="language-selector" data-i18n="languageSelectorLabel">言語：</label>
                     <select id="language-selector" disabled="true" required></select>
                 </span>
@@ -99,34 +107,34 @@
         </header>
     
         <!-- Game Area (Auto-expanding) -->
-        <main id="canvas-container" class="relative my-2 mx-6 flex flex-grow w-auto max-w-full h-full min-h-[300px] max-h-full aspect-square bg-white rounded-3xl shadow-xl-mine transition-all duration-200 ease-out overflow-hidden">
+        <main id="canvas-container" class="relative my-2 mx-6 flex flex-grow w-auto max-w-full h-full min-h-[300px] max-h-full aspect-square bg-white rounded-3xl shadow-[0_10px_25px_-5px_rgba(0,0,0,0.15),0_8px_10px_-6px_rgba(0,0,0,0.1)] transition-all duration-200 ease-out overflow-hidden">
             <canvas id="gameCanvas" class="cursor-crosshair touch-none"></canvas>
             
             <!-- Result Overlay -->
             <div id="result-overlay" class="hidden absolute bottom-0 w-full backdrop-blur-xs bg-white/95 border-t border-orange-100 rounded-b-3xl shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] pb-6 pt-6 px-4 flex flex-col items-center justify-center gap-4 z-20">
                 <!-- Score Row -->
-                <div class="flex items-center gap-4 w-full">
+                <div class="flex items-center gap-4 w-full font-bold">
                     <div class="flex flex-col items-center min-w-[100px]">
-                        <span id="score-label" class="text-gray-400 text-xs uppercase tracking-widest font-bold" data-i18n="resultScoreLabel">Score</span>
+                        <span id="score-label" class="text-gray-400 text-xs uppercase tracking-widest" data-i18n="resultScoreLabel">Score</span>
                         <span id="score" class="text-5xl font-black text-momoko leading-none" data-i18n="resultScoreDisplay" data-i18n-interpolation-data='{"count": 0}'>{{count}}%</span>
                     </div>
                     
                     <div class="h-12 w-1 bg-orange-200 rounded-full"></div> 
 
-                    <div id="message" class="text-gray-600 font-bold leading-tight text-lg"></div>
+                    <div id="message" class="text-gray-600 leading-tight text-lg"></div>
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="flex w-full gap-3">
+                <div class="flex w-full gap-3 font-bold">
                     <!-- Twitter Button (Fixed Icon) -->
-                    <button type="button" id="share-on-twitter" class="flex-1 bg-black text-white px-4 py-3 rounded-full font-bold hover:opacity-80 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
+                    <button type="button" id="share-on-twitter" class="result-button flex-1 bg-black hover:opacity-80">
                         <!-- Used standard fa-twitter (bird) for guaranteed visibility -->
                         <i class="fa-brands fa-twitter text-xl text-white"></i>
                         <span data-i18n="shareTweet">Post</span>
                     </button>
                     
                     <!-- Retry Button -->
-                    <button type="button" id="reset-game" class="flex-[2] bg-momoko text-white px-4 py-3 rounded-full font-bold hover:opacity-90 transition-opacity shadow-md text-lg active:scale-95 transform transition-transform flex items-center justify-center gap-2">
+                    <button type="button" id="reset-game" class="result-button flex-[2] bg-momoko">
                         <i class="fa-solid fa-rotate-right text-xl"></i>
                         <span data-i18n="retry">もう一回</span>
                     </button>
