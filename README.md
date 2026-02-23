@@ -37,8 +37,11 @@ Then:
 ## 開発履歴
 
 - 2026-01-18: プロジェクト作成、主要機能の実装
-- 2026-01-30: Introduced i18n support, improved canvas drawing logic
-- 2026-02-24: Added build pipeline
+- 2026-01-20: Change page header; last update from original author
+- 2026-01-30 to 02-01: Added i18n, improved canvas drawing logic, etc.
+- 2026-02-22 to 23: Random cleanup and fixes; pointer support improvement;
+    added favicon, Open Graph tags and manifest; started hosting this "personally"
+- 2026-02-24: Added building pipeline using Vite
 
 ## ライセンス
 
