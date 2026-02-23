@@ -2,7 +2,7 @@
 
 [プレイはこちらから](https://dobby233liu.github.io/Circle-Master-Momoko/)
 
-![ScreenShot](public/ScreenShot.png)
+![Screenshot](public/ScreenShot.png)
 
 「トゲトゲなさんかくを、まあるくしてね。」
 
@@ -13,7 +13,7 @@
 
 - Open the [publicly hosted version](https://dobby233liu.github.io/Circle-Master-Momoko/)
     (you may save `index.html` for offline use, HTTP server not required).
-- Or, build the app:
+- Or build the app:
 
     ```shell
     pnpm install
