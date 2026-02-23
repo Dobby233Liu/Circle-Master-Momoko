@@ -24,9 +24,11 @@ export default defineConfig({
         },
         terserOptions: {
             toplevel: true,
+            mangle: {
+                module: true
+            },
             compress: {
-                dead_code: true,
-                toplevel: true,
+                module: true,
                 unsafe: true,
                 unsafe_arrows: true,
                 unsafe_comps: true,
@@ -34,6 +36,12 @@ export default defineConfig({
                 unsafe_methods: true,
                 unsafe_undefined: true,
                 unsafe_proto: true,
+                keep_fargs: false,
+                hoist_funs: true,
+                passes: 3
+            },
+            format: {
+                ecma: 2016
             }
         }
     },

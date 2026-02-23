@@ -47,6 +47,7 @@ async function init() {
     
     await initI18n();
 }
+document.addEventListener("DOMContentLoaded", init);
 
 function toggleGuide() {
     isGuideMode = !isGuideMode;
@@ -147,31 +148,18 @@ class CircleGamePoint {
         this.y = y;
     }
     
-    static fromPhysicalCanvasPos(x, y) {
+    static /*@__MANGLE_PROP__*/ fromPhysicalCanvasPos(x, y) {
         return new this(x / canvasSize, y / canvasSize);
     }
     
-    static fromPointerEvent({ clientX, clientY }) {
+    static /*@__MANGLE_PROP__*/ fromPointerEvent({ clientX, clientY }) {
         const rect = canvas.getBoundingClientRect();
         return this.fromPhysicalCanvasPos(clientX - rect.left, clientY - rect.top);
     }
     
-    toCanvasPos() {
+    /*@__MANGLE_PROP__*/ toCanvasPos() {
         return [this.x * canvasSize, this.y * canvasSize];
     }
-}
-
-let startDrawingDebounce = false;
-let startDrawingDebounceTimer = null;
-function startStartDrawingDebounce() {
-    endStartDrawingDebounce();
-    startDrawingDebounce = true;
-    startDrawingDebounceTimer = setTimeout(endStartDrawingDebounce, 50);
-}
-function endStartDrawingDebounce() {
-    startDrawingDebounce = false;
-    clearTimeout(startDrawingDebounceTimer);
-    startDrawingDebounceTimer = null;
 }
 
 function setupUserBrush() {
@@ -184,13 +172,23 @@ function clearCanvas() {
     ctx.clearRect(0, 0, canvasSize, canvasSize);
 }
 
+let startDrawingDebounceTimer = null;
+function startStartDrawingDebounce() {
+    endStartDrawingDebounce();
+    startDrawingDebounceTimer = setTimeout(endStartDrawingDebounce, 50);
+}
+function endStartDrawingDebounce() {
+    clearTimeout(startDrawingDebounceTimer);
+    startDrawingDebounceTimer = null;
+}
+
 let currentPointer = -1;
 
 function startDrawing(e) {
     currentPointer = e.pointerId;
     
     if (!resultOverlay.classList.contains('hidden')) {
-        if (startDrawingDebounce) return;
+        if (startDrawingDebounceTimer) return;
         resetGame();
     }
     endStartDrawingDebounce();
@@ -409,5 +407,3 @@ function triggerConfetti(score) {
     }
     setTimeout(() => newConfettis.forEach(i => i.remove()), 3500);
 }
-
-document.addEventListener("DOMContentLoaded", init);
