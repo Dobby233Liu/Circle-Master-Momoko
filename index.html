@@ -85,7 +85,7 @@
 </head>
 <!-- Use h-dvh (dynamic viewport height) for better mobile support -->
 <body class="select-none overflow-auto overflow-x-hidden font-sans-mine bg-yellow-101 bg-(image:--bg-shapes)">
-    <div id="confetti-container" class="fixed w-dvw h-dvh top-0 left-0 z-100 pointer-events-none"></div>
+    <div id="confetti-container" class="fixed top-0 left-0 z-100 pointer-events-none"></div>
 
     <div class="h-dvh flex flex-col items-center py-2">
         <!-- Compact Header -->
@@ -806,7 +806,7 @@
         for (let i = 0; i < count; i++) {
             const confetti = document.createElement('div');
             confetti.className = 'confetti';
-            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.left = Math.random() * 100 + 'dvw';
             confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
             confetti.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
             confetti.style.setProperty("--tw-rotate-z", `rotateZ(${Math.random() * 360}deg)`);
