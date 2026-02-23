@@ -59,8 +59,8 @@
             }
             
             @keyframes confetti-fall {
-                from { translate: 0 -20px; }
-                to { translate: 0 calc(100dvh - 15px); --tw-rotate-z: rotateZ(720deg); }
+                from { translate: 0 calc(-100dvh - 14px - 6px); }
+                to { translate: 0 -14px; --tw-rotate-z: rotateZ(720deg); }
             }
             
             .confetti {
@@ -85,7 +85,7 @@
 </head>
 <!-- Use h-dvh (dynamic viewport height) for better mobile support -->
 <body class="select-none overflow-auto overflow-x-hidden font-sans-mine bg-yellow-101 bg-(image:--bg-shapes)">
-    <div id="confetti-container" class="fixed top-0 left-0 z-100 pointer-events-none"></div>
+    <div id="confetti-container" class="fixed left-0 bottom-0 z-100 pointer-events-none"></div>
 
     <div class="h-dvh flex flex-col items-center py-2">
         <!-- Compact Header -->
