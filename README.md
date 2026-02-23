@@ -2,7 +2,7 @@
 
 [プレイはこちらから](https://m-masaki72.github.io/Circle-Master-Momoko/)
 
-![ScreenShot](ScreenShot.png)
+![ScreenShot](public/ScreenShot.png)
 
 「トゲトゲなさんかくを、まあるくしてね。」
 

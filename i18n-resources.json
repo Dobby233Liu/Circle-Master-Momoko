@@ -1,0 +1,155 @@
+{
+    "ja": {
+        "translation": {
+            "languageName": "日本語",
+            "languageSelectorLabel": "言語：",
+            "appName": "Circle M@ster Momoko",
+            "gameObjective": "トゲトゲなさんかくを、まあるくしてね。",
+            "guideToggleLabel_off": "ガイド: OFF",
+            "guideToggleLabel_on": "ガイド: ON",
+            "resultScoreLabel": "Score",
+            "resultScoreDisplay": "{{count}}%",
+            "resultComment100": [
+                "完璧！桃子のプロデューサーなら当然だね♪",
+                "すごーい！お兄ちゃん、やる時はやるんだね！",
+                "満点かぁ…へえ、お兄ちゃんのこと、見直したよ。",
+                "これが桃子のプロデュースの実力…なんてね、お兄ちゃんのおかげだよ。",
+                "見て見て！すっごく綺麗なマル！桃子、嬉しいな♪"
+            ],
+            "resultComment90": [
+                "うん、綺麗にまあるくなってるよ！合格点かな。",
+                "おしい！あとちょっとで完璧だったのに。",
+                "なかなかやるね。桃子も負けてられないな。",
+                "これならステージに出しても恥ずかしくない出来だよ。",
+                "お兄ちゃんの優しさが伝わってくるみたいな円だね。"
+            ],
+            "resultComment80": [
+                "トゲトゲはなくなってきたかな？",
+                "うーん、悪くはないけど…もっと上目指せるでしょ？",
+                "まあまあかな。でも、桃子はもっと期待してるよ。",
+                "少し歪んでるけど、味があるといえばあるかも？",
+                "練習の成果は出てるよ。次はいけるんじゃない？"
+            ],
+            "resultComment60": [
+                "まだちょっとサンカクっぽいかも…。",
+                "気が抜けてるんじゃない？桃子、怒るよ？",
+                "お兄ちゃん、疲れてるの？休憩する？",
+                "これじゃ「ローリングさんかく」だね。もっとまあるくして！",
+                "集中力が足りないよ。プロなら結果出してよね。"
+            ],
+            "resultComment0": [
+                "お兄ちゃん、ちゃんとやってよー！",
+                "はぁ…これじゃ桃子のプロデューサー失格だよ。",
+                "何これ…芸術的すぎて桃子にはわからないよ。",
+                "ふざけてるなら、踏み台にしちゃうからね！",
+                "もう一回！納得いくまで帰さないから。"
+            ],
+            "shareTweet": "Post",
+            "shareTweetText": "$t(appName)でスコア$t(resultScoreDisplay, {'count': {{score}}})を出したよ！\n桃子「$t({{message}})」\n#CircleMasterMomoko",
+            "retry": "もう一回",
+            "acceptedInputTypes": "<i class=\"fa-solid fa-computer-mouse mr-1\"></i>マウス / <i class=\"fa-solid fa-fingerprint mx-1\"></i>指で描いてね"
+        }
+    },
+    "zh-Hans": {
+        "translation": {
+            "languageName": "中文（简体）",
+            "languageSelectorLabel": "语言：",
+            "appName": "圆环大师桃子",
+            "gameObjective": "把带刺的三角形，变成圆圆的哦。",
+            "guideToggleLabel_off": "辅助圆：关",
+            "guideToggleLabel_on": "辅助圆：开",
+            "resultScoreLabel": "分数",
+            "resultScoreDisplay": "{{count}}%",
+            "resultComment100": [
+                "完美！不愧是桃子的制作人呢♪",
+                "好厉害！哥哥，该出手的时候真不含糊呢！",
+                "满分啊…嘿，我对哥哥刮目相看了哦。",
+                "这就是桃子制作的实力…什么的，才不是呢，都是哥哥的功劳啦。",
+                "快看快看！好漂亮的圆圈！桃子好开心♪"
+            ],
+            "resultComment90": [
+                "嗯，变得很圆润了呢！算合格了吧。",
+                "可惜！就差一点点就完美了。",
+                "挺有两下子的嘛。桃子也不能输给你了。",
+                "有这个水准的话，就算登上舞台也不会觉得丢人了哦。",
+                "感觉这个圆里能感受到哥哥的温柔呢。"
+            ],
+            "resultComment80": [
+                "那些尖刺是不是差不多消失了？",
+                "唔…倒也不算差…但还能做得更好吧？",
+                "马马虎虎吧。不过，桃子可是有更高期待的哦。",
+                "虽然有点歪，但要说有特色的话，可能也算吧？",
+                "练习的成果已经体现出来了。下次一定能行吧？"
+            ],
+            "resultComment60": [
+                "好像还是有点三角形的感觉…",
+                "是不是没集中精神？桃子要生气咯？",
+                "哥哥，是累了吗？要休息一下吗？",
+                "这简直是“滚动三角形”嘛。要再圆一点啦！",
+                "集中力不够哦。如果是专业人士的话，得拿出成果来呀。"
+            ],
+            "resultComment0": [
+                "哥哥，你给我认真一点啦——！",
+                "哈啊…这样可不够格当桃子的制作人哦。",
+                "这是什么…太有艺术性了桃子理解不了啦。",
+                "如果你是在糊弄我，我就把你当脚垫踩哦！",
+                "再来一次！在你做到我满意之前，我是不会放你走的。"
+            ],
+            "shareTweet": "发帖",
+            "shareTweetText": "我在$t(appName)中获得了$t(resultScoreDisplay, {'count': {{score}}})的分数！\n桃子：「$t({{message}})」\n#CircleMasterMomoko",
+            "retry": "再来一次",
+            "acceptedInputTypes": "<i class=\"fa-solid fa-computer-mouse mr-1\"></i>鼠标 / <i class=\"fa-solid fa-fingerprint mr-1\"></i>手指绘制"
+        }
+    },
+    "en": {
+        "translation": {
+            "languageName": "English",
+            "languageSelectorLabel": "Language: ",
+            "appName": "Circle M@ster Momoko",
+            "gameObjective": "Turn the spiky triangle into a smooth circle.",
+            "guideToggleLabel_off": "Guide: Off",
+            "guideToggleLabel_on": "Guide: On",
+            "resultScoreLabel": "Score",
+            "resultScoreDisplay": "{{count}}%",
+            "resultComment100": [
+                "Perfect! Of course, that's what I'd expect from Momoko's producer♪",
+                "Wow! You're really serious when you want to be, Onii-chan!",
+                "Full marks, huh... I'm impressed, Onii-chan.",
+                "This is the power of Momoko's producing... Just kidding, it's all thanks to you, Onii-chan.",
+                "Look, look! It's such a beautiful circle! Momoko is so happy♪"
+            ],
+            "resultComment90": [
+                "Yeah, it's become a nice, smooth circle! I guess that's a passing grade.",
+                "So close! It was almost perfect.",
+                "Not bad at all. Momoko can't afford to lose now.",
+                "With this, I wouldn't be ashamed to take the stage.",
+                "This circle feels like it's full of your kindness, Onii-chan."
+            ],
+            "resultComment80": [
+                "Has the spikiness mostly gone away?",
+                "Hmm, it's not bad... but you can aim higher, right?",
+                "It's okay, I guess. But Momoko was expecting more.",
+                "It's a bit warped, but maybe you could call it... having character?",
+                "I can see your practice paying off. You'll get it next time, won't you?"
+            ],
+            "resultComment60": [
+                "It still looks a bit... triangular...",
+                "Are you losing focus? Momoko's getting angry, you know?",
+                "Are you tired, Onii-chan? Want to take a break?",
+                "At this point, it's more of a \"rolling triangle\"! Make it more round!",
+                "You need more concentration. A real pro would deliver results."
+            ],
+            "resultComment0": [
+                "Onii-chan, do it properly!",
+                "Sigh... You're not cut out to be Momoko's producer.",
+                "What is this... It's too artistic for Momoko to understand.",
+                "If you're just fooling around, I'll use you as a footstool!",
+                "Again! I won't let you leave until I'm satisfied."
+            ],
+            "shareTweet": "Post",
+            "shareTweetText": "I got a score of $t(resultScoreDisplay, {'count': {{score}}}) in $t(appName)!\nMomoko: \"$t({{message}})\"\n#CircleMasterMomoko",
+            "retry": "Try Again",
+            "acceptedInputTypes": "Draw with your <i class=\"fa-solid fa-computer-mouse mx-1\"></i>mouse or <i class=\"fa-solid fa-fingerprint mx-1\"></i>finger"
+        }
+    }
+}

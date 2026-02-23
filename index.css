@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+    --font-sans-mine: 'Helvetica Neue', Arial, var(--font-sans);
+    --color-yellow-101: #ffeec2;
+    --bg-shapes: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 60 60"><g fill="%23ffffff" fill-opacity=".6" fill-rule="evenodd"><path d="M10 10h10v10H10z"/><circle cx="40" cy="40" r="5"/><path d="m40 10 5 10H35zM10 40h10v10H10zm15 10 5 10H20z"/><circle cx="50" cy="20" r="3"/></g></svg>');
+    --color-momoko: #efb864;
+    --animate-fade-in-and-slide-up: fade-in-and-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    --animate-confetti-fall: confetti-fall linear forwards;
+}
+
+@layer base {
+    button:not(:disabled), [role="button"]:not(:disabled) {
+        @apply cursor-pointer;
+    }
+}
+
+@layer components {
+    .header-button {
+        @apply flex items-center gap-2 bg-white border border-gray-200 px-3 py-1 rounded-full font-bold shadow-xs hover:bg-orange-50 transition-colors active:scale-95;
+    }
+    
+    #gameCanvas.game-canvas-downscaled {
+        image-rendering: pixelated;
+    }
+    
+    @keyframes fade-in-and-slide-up {
+        from { opacity: 0; translate: 0 100%; }
+        to { opacity: 1; }
+    }
+    
+    .result-button {
+        @apply flex items-center justify-center gap-2 px-4 py-3 rounded-full shadow-md text-lg text-white;
+        @apply hover:opacity-90 transition-opacity active:scale-95;
+    }
+    
+    @keyframes confetti-fall {
+        from { translate: 0 calc(-100dvh - 14px - 6px); }
+        to { translate: 0 -14px; --tw-rotate-z: rotateZ(720deg); }
+    }
+    
+    .confetti {
+        @apply absolute pointer-events-none size-3.5 animate-confetti-fall transform-gpu;
+    }
+    .confetti.confetti-triangle {
+        @apply rounded-none;
+        clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    }
+    .confetti.confetti-circle {
+        @apply rounded-full;
+        clip-path: none;
+    }
+    .confetti.confetti-square {
+        @apply rounded-none;
+        clip-path: none;
+    }
+}
