@@ -41,7 +41,7 @@
         
         @layer components {
             .header-button {
-                @apply bg-white border border-gray-200 px-3 py-1 rounded-full font-bold shadow-xs hover:bg-orange-50 transition-colors active:scale-95;
+                @apply flex items-center gap-2 bg-white border border-gray-200 px-3 py-1 rounded-full font-bold shadow-xs hover:bg-orange-50 transition-colors active:scale-95;
             }
             
             #gameCanvas.game-canvas-downscaled {
@@ -98,7 +98,7 @@
                 <span class="bg-white/60 px-3 py-1 rounded-md font-bold" data-i18n="gameObjective">トゲトゲなさんかくを、まあるくしてね。</span>
                 <!-- Guide Button moved here to save vertical space -->
                 <button type="button" id="guide-toggle" class="header-button">
-                    <i id="guide-toggle-icon" class="fa-regular fa-circle mr-1"></i>
+                    <i id="guide-toggle-icon" class="fa-regular fa-circle"></i>
                     <span id="guide-toggle-text" data-i18n="guideToggleLabel" data-i18n-context="off">ガイド: OFF</span>
                 </button>
                 <span class="header-button active:scale-none">
