@@ -16,7 +16,7 @@
 
     ```shell
     pnpm install
-    pnpm dev
+    pnpm build
     ```
 
     And open `dist/index.html` in a browser (HTTP server not required).
