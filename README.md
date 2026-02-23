@@ -11,8 +11,7 @@
 
 ## 遊び方
 
-- Open the [publicly hosted version](https://dobby233liu.github.io/Circle-Master-Momoko/)
-    (you may save `index.html` for offline use, HTTP server not required).
+- Open the [publicly hosted version](https://dobby233liu.github.io/Circle-Master-Momoko/).
 - Or build the app:
 
     ```shell
