@@ -1,6 +1,7 @@
 import "./index.css";
 import { initI18n, setTextLocalizable } from "./i18n.js";
 
+// vite-plugin-html cdn plugin doesn't exclude fa automatically for some reason
 if (import.meta.env.DEV) {
     import("./fa.js");
 }
