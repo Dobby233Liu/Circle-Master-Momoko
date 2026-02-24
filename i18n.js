@@ -112,11 +112,11 @@ export async function initI18n(resources={}, options={}) {
     i18next.on("loaded", onI18nLoaded);
     await i18next.init(defineOptions({
         showSupportNotice: false,
+        resources: resources,
         detection: {
-            order: ["querystring", "navigator"],
+            order: ["querystring", "localStorage", "navigator"],
             lookupQuerystring: "lang"
         },
-        resources: resources,
         ...options
     }));
 }
