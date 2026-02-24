@@ -54,7 +54,7 @@ function onI18nLoaded() {
     });
     
     languageSelector.replaceChildren();
-    for (const lng of TRUE_SUPPORTED_LANGS) {
+    for (const lng of i18next.options.supportedLngsReal ?? i18next.options.supportedLngs) {
         const option = languageSelector.appendChild(document.createElement("option"));
         option.value = lng;
         option.innerText = i18next.t("languageName", { lng });
@@ -94,25 +94,29 @@ export function setTextLocalizable(elem, key, options) {
         delete elem.dataset.i18nInterpolationData;
 }
 
-import i18nResources from "./i18n-resources.json";
-// can't obtain anything like this from i18next
-const TRUE_SUPPORTED_LANGS = ["ja", "zh-Hans", "en"];
-export async function initI18n() {
+/**
+ * @param {import("i18next").InitOptions} o 
+ * @returns {import("i18next").InitOptions}
+ */
+function defineOptions(o) {
+    return o;
+}
+
+/**
+ * @param {import("i18next").InitOptions} options
+ */
+export async function initI18n(resources={}, options={}) {
     i18next.use(i18nextBrowserLanguageDetector);
     i18next.on("languageChanged", onLangChange);
     i18next.on("initialized", onI18nLoaded);
     i18next.on("loaded", onI18nLoaded);
-    await i18next.init({
-        supportedLngs: ["ja", "zh-Hans", "zh-CN", "zh", "en"],
-        fallbackLng: {
-            zh: ["zh-Hans", "ja"],
-            "zh-CN": ["zh-Hans", "ja"],
-            default: ["ja"]
-        },
+    await i18next.init(defineOptions({
+        showSupportNotice: false,
         detection: {
             order: ["querystring", "navigator"],
             lookupQuerystring: "lang"
         },
-        resources: i18nResources
-    });
+        resources: resources,
+        ...options
+    }));
 }

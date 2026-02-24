@@ -1,4 +1,5 @@
 import "./index.css";
+import i18nResources from "./i18n-resources.json";
 import { initI18n, setTextLocalizable } from "./i18n.js";
 
 // vite-plugin-html cdn plugin doesn't exclude fa automatically for some reason
@@ -47,7 +48,15 @@ async function init() {
     canvas.addEventListener('pointerup', endDrawing);
     canvas.addEventListener('pointerout', endDrawing);
     
-    await initI18n();
+    await initI18n(i18nResources, {
+        supportedLngs: ["ja", "zh-Hans", "zh-CN", "zh", "en"],
+        supportedLngsReal: ["ja", "zh-Hans", "en"],
+        fallbackLng: {
+            zh: ["zh-Hans", "ja"],
+            "zh-CN": ["zh-Hans", "ja"],
+            default: ["ja"]
+        }
+    });
 }
 document.addEventListener("DOMContentLoaded", init);
 
