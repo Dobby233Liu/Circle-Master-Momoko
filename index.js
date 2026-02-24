@@ -188,6 +188,10 @@ function endStartDrawingDebounce() {
 let currentPointer = -1;
 
 function startDrawing(e) {
+    if (e.button != 0) {
+        currentPointer = -1;
+        return;
+    }
     currentPointer = e.pointerId;
     
     if (!resultOverlay.classList.contains('hidden')) {
