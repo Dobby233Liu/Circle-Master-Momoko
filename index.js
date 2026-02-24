@@ -110,9 +110,10 @@ function resizeCanvas() {
     }
 
     if (dpr > 1) {
-        ctx.scale(dpr, dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         canvas.classList.add("game-canvas-downscaled");
     } else {
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
         canvas.classList.remove("game-canvas-downscaled");
     }
     
