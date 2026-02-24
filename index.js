@@ -185,11 +185,11 @@ function endStartDrawingDebounce() {
     startDrawingDebounceTimer = null;
 }
 
-let currentPointer = -1;
+let currentPointer = -2;
 
 function startDrawing(e) {
     if (e.button != 0) {
-        currentPointer = -1;
+        currentPointer = -2;
         return;
     }
     currentPointer = e.pointerId;
