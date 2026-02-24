@@ -105,7 +105,7 @@ function resizeCanvas() {
 
     let resized = false;
     const dpr = window.devicePixelRatio || 1;
-    const realCanvasSize = Math.round(canvasSize * (dpr > 1 ? dpr : 1));
+    const realCanvasSize = Math.ceil(canvasSize * (dpr > 1 ? dpr : 1));
     if (canvas.width != realCanvasSize || canvas.height != realCanvasSize) {
         canvas.width = realCanvasSize;
         canvas.height = realCanvasSize;
