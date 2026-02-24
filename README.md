@@ -29,16 +29,21 @@ Then:
 ## 技術スタック
 
 - HTML5 / JavaScript (Canvas API)
-- Tailwind CSS
-- Font Awesome
-- i18next
+- Tailwind CSS (~~CDN~~ Vite plugin)
+- Font Awesome (CDN or local depending on environment)
+- Claude (on Masaki Mori's side, presumably)
+- i18next (CDN or local depending on environment)
 - Vite
 
 ## 開発履歴
 
 - 2026-01-18: プロジェクト作成、主要機能の実装
-- 2026-01-20: Change page header; last update from original author
+- 2026-01-20: Change page header; last update by Masaki Mori
+  - Up to this point a good chunk of the code (mainly the UI and drawing code)
+    seems AI-generated
 - 2026-01-30 to 02-01: Added i18n, improved canvas drawing logic, etc.
+  - Here DeepSeek was responsible for all the localized text, advice for setting
+    up the localization keys for resultComment, and barely anything else (I think)
 - 2026-02-22 to 23: Random cleanup and fixes; pointer support improvement;
     added favicon, Open Graph tags and manifest; started hosting this "personally"
 - 2026-02-24: Added building pipeline using Vite
