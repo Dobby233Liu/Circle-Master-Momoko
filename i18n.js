@@ -1,5 +1,5 @@
 import i18next from "i18next";
-import I18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
+import i18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 
 const i18nObserver = new MutationObserver(onI18nAttrChanged);
 const languageSelector = document.getElementById("language-selector");
@@ -98,7 +98,7 @@ import i18nResources from "./i18n-resources.json";
 // can't obtain anything like this from i18next
 const TRUE_SUPPORTED_LANGS = ["ja", "zh-Hans", "en"];
 export async function initI18n() {
-    i18next.use(I18nextBrowserLanguageDetector);
+    i18next.use(i18nextBrowserLanguageDetector);
     i18next.on("languageChanged", onLangChange);
     i18next.on("initialized", onI18nLoaded);
     i18next.on("loaded", onI18nLoaded);
