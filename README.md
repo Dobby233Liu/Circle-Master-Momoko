@@ -47,7 +47,7 @@ Then:
 - 2026-01-30 to 02-01: Improved canvas drawing logic etc.
 - 2026-02-22 to 23: Pointer support improvement; added favicon, Open Graph tags
     and manifest; started hosting this under my github.io domain
-- 2026-02-24: Added building pipeline using Vite
+- 2026-02-24: Added building pipeline using Vite, modularize src
 
 ## ライセンス
 
