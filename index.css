@@ -3,7 +3,7 @@
 @theme {
     --font-sans-mine: 'Helvetica Neue', Arial, var(--font-sans);
     --color-yellow-101: #ffeec2;
-    --bg-shapes: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 60 60"><g fill="%23ffffff" fill-opacity=".6" fill-rule="evenodd"><path d="M10 10h10v10H10z"/><circle cx="40" cy="40" r="5"/><path d="m40 10 5 10H35zM10 40h10v10H10zm15 10 5 10H20z"/><circle cx="50" cy="20" r="3"/></g></svg>');
+    --bg-shapes: url(/bg.svg);
     --color-momoko: #efb864;
     --animate-fade-in-and-slide-up: fade-in-and-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     --animate-confetti-fall: confetti-fall linear forwards;
@@ -17,7 +17,9 @@
 
 @layer components {
     .header-button {
-        @apply flex flex-wrap items-center justify-center gap-2 bg-white border border-gray-200 px-3 py-1 rounded-full font-bold shadow-xs hover:bg-orange-50 transition-colors active:scale-95;
+        @apply px-3 py-1 flex flex-wrap items-center justify-center gap-2;
+        @apply bg-white hover:bg-orange-50 transition-colors border border-gray-200;
+        @apply rounded-full shadow-xs font-bold active:scale-95;
     }
     
     #gameCanvas.game-canvas-downscaled {
