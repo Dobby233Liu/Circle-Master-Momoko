@@ -41,11 +41,12 @@ Then:
 - 2026-01-20: Change page header; last update by Masaki Mori
   - Up to this point a good chunk of the code (mainly the UI and drawing code)
     seems AI-generated
-- 2026-01-30 to 02-01: Added i18n, improved canvas drawing logic, etc.
+- 2026-01-29 to 01-30: Start fork; add i18n
   - Here DeepSeek was responsible for all the localized text, advice for setting
     up the localization keys for resultComment, and barely anything else (I think)
-- 2026-02-22 to 23: Random cleanup and fixes; pointer support improvement;
-    added favicon, Open Graph tags and manifest; started hosting this "personally"
+- 2026-01-30 to 02-01: Improved canvas drawing logic etc.
+- 2026-02-22 to 23: Pointer support improvement; added favicon, Open Graph tags
+    and manifest; started hosting this under my github.io domain
 - 2026-02-24: Added building pipeline using Vite
 
 ## ライセンス
