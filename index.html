@@ -37,12 +37,6 @@
                     <i id="guide-toggle-icon" class="fa-regular fa-circle"></i>
                     <span id="guide-toggle-text" data-i18n="guideToggleLabel" data-i18n-context="off">ガイド: OFF</span>
                 </button>
-                <span class="header-button gap-0.5 active:scale-none">
-                    <label for="language-selector" data-i18n="languageSelectorLabel">言語：</label>
-                    <select id="language-selector" disabled="true" required>
-                        <option value="ja" selected>日本語</option>
-                    </select>
-                </span>
             </p>
         </header>
     
@@ -86,9 +80,17 @@
             </div>
         </div>
     
-        <!-- Minimal Footer Guide -->
-        <footer id="footer-area" class="mt-auto text-gray-400 text-xs md:text-sm text-center bg-white/60 px-6 py-1 rounded-full backdrop-blur-xs font-bold z-10 shrink-0" data-i18n="acceptedInputTypes">
-            <i class="fa-solid fa-computer-mouse mr-1"></i>マウス / <i class="fa-solid fa-fingerprint mx-1"></i>指で描いてね
+        <footer id="footer-area" class="text-center z-10 flex items-center shrink-0 gap-4 text-xs md:text-sm">
+            <!-- Minimal Footer Guide -->
+            <span class="mt-auto text-gray-400 text-center bg-white/60 px-6 py-1 rounded-full backdrop-blur-xs font-bold shrink-0" data-i18n="acceptedInputTypes">
+                <i class="fa-solid fa-computer-mouse mr-1"></i>マウス / <i class="fa-solid fa-fingerprint mx-1"></i>指で描いてね
+            </span>
+            <span class="header-button text-gray-500 active:scale-none">
+                <label for="language-selector" data-i18n="languageSelectorLabel" class="sr-only">言語：</label>
+                <select id="language-selector" disabled="true" required>
+                    <option value="ja" selected>日本語</option>
+                </select>
+            </span>
         </footer>
     </div>
 
