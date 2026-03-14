@@ -1,8 +1,6 @@
 {
     "ja": {
         "translation": {
-            "languageName": "日本語",
-            "languageSelectorLabel": "言語：",
             "appName": "Circle M@ster Momoko",
             "gameObjective": "トゲトゲなさんかくを、まあるくしてね。",
             "guideToggleLabel_off": "ガイド: OFF",
@@ -47,13 +45,14 @@
             "shareTweet": "Post",
             "shareTweetText": "$t(appName)でスコア$t(resultScoreDisplay, {'count': {{score}}})を出したよ！\n桃子「$t({{message}})」\n#CircleMasterMomoko",
             "retry": "もう一回",
-            "acceptedInputTypes": "<i class=\"fa-solid fa-computer-mouse mr-1\"></i>マウス / <i class=\"fa-solid fa-fingerprint mx-1\"></i>指で描いてね"
+            "acceptedInputTypes": "<i class=\"fa-solid fa-computer-mouse mr-1\"></i>マウス / <i class=\"fa-solid fa-fingerprint mx-1\"></i>指で描いてね",
+            "languageName": "日本語",
+            "languageSelectorLabel": "言語：",
+            "languageSelectorTooltip": "言語を選択"
         }
     },
     "zh-Hans": {
         "translation": {
-            "languageName": "中文（简体）",
-            "languageSelectorLabel": "语言：",
             "appName": "圆环大师桃子",
             "gameObjective": "把带刺的三角形，变成圆圆的哦。",
             "guideToggleLabel_off": "辅助圆：关",
@@ -98,13 +97,14 @@
             "shareTweet": "发帖",
             "shareTweetText": "我在$t(appName)中获得了$t(resultScoreDisplay, {'count': {{score}}})的分数！\n桃子：「$t({{message}})」\n#CircleMasterMomoko",
             "retry": "再来一次",
-            "acceptedInputTypes": "<i class=\"fa-solid fa-computer-mouse mr-1\"></i>鼠标 / <i class=\"fa-solid fa-fingerprint mr-1\"></i>手指绘制"
+            "acceptedInputTypes": "<i class=\"fa-solid fa-computer-mouse mr-1\"></i>鼠标 / <i class=\"fa-solid fa-fingerprint mr-1\"></i>手指绘制",
+            "languageName": "中文（简体）",
+            "languageSelectorLabel": "语言：",
+            "languageSelectorTooltip": "选择语言"
         }
     },
     "en": {
         "translation": {
-            "languageName": "English",
-            "languageSelectorLabel": "Language: ",
             "appName": "Circle M@ster Momoko",
             "gameObjective": "Turn the spiky triangle into a smooth circle.",
             "guideToggleLabel_off": "Guide: Off",
@@ -149,7 +149,10 @@
             "shareTweet": "Post",
             "shareTweetText": "I got a score of $t(resultScoreDisplay, {'count': {{score}}}) in $t(appName)!\nMomoko: \"$t({{message}})\"\n#CircleMasterMomoko",
             "retry": "Try Again",
-            "acceptedInputTypes": "Use <i class=\"fa-solid fa-computer-mouse mx-1\"></i>mouse / <i class=\"fa-solid fa-fingerprint mr-1\"></i>finger"
+            "acceptedInputTypes": "Use <i class=\"fa-solid fa-computer-mouse mx-1\"></i>mouse / <i class=\"fa-solid fa-fingerprint mr-1\"></i>finger",
+            "languageName": "English",
+            "languageSelectorLabel": "Language: ",
+            "languageSelectorTooltip": "Select language"
         }
     }
 }

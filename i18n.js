@@ -10,28 +10,54 @@ export function prepI18nLoad() {
 }
 prepI18nLoad();
 
-function applyI18nToTextOf(elem) {
-    if (!elem?.dataset?.i18n)
-        return;
+function splitI18nProp(mainProp) {
+    if (!mainProp) return;
     
-    const context = elem.dataset.i18nContext;
-    let interpolationData = {};
-    if (elem.dataset.i18nInterpolationData) {
-        try {
-            interpolationData = JSON.parse(elem.dataset.i18nInterpolationData);
-            if (typeof interpolationData !== "object")
-                throw new Error('typeof interpolationData !== "object"');
-        } catch (err) {
-            console.error("Bad interpolation data for:", elem, err);
+    const items = mainProp.split(";");
+    const map = new Map();
+    for (const item of items) {
+        if (item.length == 0) continue;
+        const itemSplit = item.split(":");
+        const key = itemSplit.length > 1 ? itemSplit[0] : "innerHTML";
+        if (key == "__proto__")
+            continue;
+        map.set(key, itemSplit[1] ?? itemSplit[0]);
+    }
+    return map;
+}
+
+function applyI18nToTextOf(elem) {
+    const keysByProp = splitI18nProp(elem.dataset.i18n);
+    if (keysByProp?.size == 0) return;
+    
+    const contextByProp = splitI18nProp(elem.dataset.i18nContext);
+    const interpolationByProp = splitI18nProp(elem.dataset.i18nInterpolationData);
+    
+    for (const [prop, key] of keysByProp) {
+        if (!(prop in elem)) {
+            console.error("Attempted to apply i18n on nonexistent property", elem, prop);
             return false;
         }
+        
+        const propInterpolationRaw = interpolationByProp?.get(prop);
+        let propInterpolation;
+        if (propInterpolationRaw) {
+            try {
+                propInterpolation = JSON.parse(propInterpolationRaw);
+                if (typeof propInterpolation !== "object")
+                    throw new Error('typeof propInterpolation !== "object"');
+            } catch (err) {
+                console.error("Bad interpolation data for:", elem, prop, err);
+                return false;
+            }
+        }
+        
+        elem[prop] = i18next.t(key, {
+            context: contextByProp?.get(prop),
+            ...propInterpolation
+        });
     }
     
-    const str = i18next.t(elem.dataset.i18n, {
-        context: context,
-        ...interpolationData
-    });
-    elem.innerHTML = str;
     return true;
 }
 function applyI18nToTextOfAll(root = document) {
