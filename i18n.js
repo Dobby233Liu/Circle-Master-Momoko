@@ -10,14 +10,16 @@ export function prepI18nLoad() {
 }
 prepI18nLoad();
 
+export const I18N_PROP_KV_SPLITTER = "::";
+export const I18N_PROP_ENTRY_SPLITTER = ";;";
 function splitI18nProp(mainProp) {
     if (!mainProp) return;
     
-    const items = mainProp.split(";");
+    const items = mainProp.split(I18N_PROP_ENTRY_SPLITTER);
     const map = new Map();
     for (const item of items) {
         if (item.length == 0) continue;
-        const itemSplit = item.split(":");
+        const itemSplit = item.split(I18N_PROP_KV_SPLITTER);
         const key = itemSplit.length > 1 ? itemSplit[0] : "innerHTML";
         if (key == "__proto__")
             continue;
