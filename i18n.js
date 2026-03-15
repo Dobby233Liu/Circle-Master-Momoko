@@ -21,15 +21,16 @@ function splitProp(mainProp) {
         if (item.length == 0) continue;
         const itemSplit = item.split(PROP_KV_SPLITTER);
         const key = itemSplit.length > 1 ? itemSplit[0] : "innerHTML";
-        if (key == "__proto__")
-            continue;
+        if (key == "__proto__") continue;
         map.set(key, itemSplit[1] ?? itemSplit[0]);
     }
     return map;
 }
 function mergeProp(props, kvProcess) {
     if (typeof props !== "object") return props;
-    return Object.entries(props).map(i => (kvProcess ? kvProcess(i) : i).join(PROP_KV_SPLITTER)).join(PROP_ENTRY_SPLITTER);
+    return Object.entries(props)
+        .map(i => (kvProcess ? kvProcess(i) : i).join(PROP_KV_SPLITTER))
+        .join(PROP_ENTRY_SPLITTER);
 }
 
 function applyI18nToTextOf(elem) {
@@ -121,7 +122,8 @@ export function setTextLocalizable(elem, key, options) {
     else
         delete elem.dataset.i18nContext;
     if (options?.interpolationByProp)
-        elem.dataset.i18nInterpolationData = mergeProp(JSON.stringify(options.interpolationByProp), ([k, v]) => [k, JSON.stringify(v)]);
+        elem.dataset.i18nInterpolationData = mergeProp(
+            JSON.stringify(options.interpolationByProp), ([k, v]) => [k, JSON.stringify(v)]);
     else if (options?.interpolation)
         elem.dataset.i18nInterpolationData = JSON.stringify(options.interpolation);
     else
