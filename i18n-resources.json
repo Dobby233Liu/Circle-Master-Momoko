@@ -48,7 +48,8 @@
             "acceptedInputTypes": "<i class=\"fa-solid fa-computer-mouse mr-1\"></i>マウス / <i class=\"fa-solid fa-fingerprint mx-1\"></i>指で描いてね",
             "languageName": "日本語",
             "languageSelectorLabel": "言語：",
-            "languageSelectorTooltip": "言語を選択"
+            "languageSelectorTooltip": "言語を選択",
+            "shareTweetTooltip": "X/Twitterでシェア"
         }
     },
     "zh-Hans": {
@@ -100,7 +101,8 @@
             "acceptedInputTypes": "<i class=\"fa-solid fa-computer-mouse mr-1\"></i>鼠标 / <i class=\"fa-solid fa-fingerprint mr-1\"></i>手指绘制",
             "languageName": "中文（简体）",
             "languageSelectorLabel": "语言：",
-            "languageSelectorTooltip": "选择语言"
+            "languageSelectorTooltip": "选择语言",
+            "shareTweetTooltip": "分享到 X/Twitter"
         }
     },
     "en": {
@@ -152,7 +154,8 @@
             "acceptedInputTypes": "Use <i class=\"fa-solid fa-computer-mouse mx-1\"></i>mouse / <i class=\"fa-solid fa-fingerprint mr-1\"></i>finger",
             "languageName": "English",
             "languageSelectorLabel": "Language: ",
-            "languageSelectorTooltip": "Select language"
+            "languageSelectorTooltip": "Select language",
+            "shareTweetTooltip": "Share on X/Twitter"
         }
     }
 }

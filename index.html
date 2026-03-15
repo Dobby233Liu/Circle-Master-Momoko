@@ -64,7 +64,7 @@
                     <!-- Action Buttons -->
                     <div class="flex gap-3 w-full font-bold">
                         <!-- Twitter Button (Fixed Icon) -->
-                        <button type="button" id="share-on-twitter" class="result-button flex-1 bg-black hover:opacity-80">
+                        <button type="button" id="share-on-twitter" class="result-button flex-1 bg-black hover:opacity-80" title="X/Twitterでシェア" aria-label="X/Twitterでシェア" data-i18n="ariaLabel::shareTweetTooltip%%title::shareTweetTooltip">
                             <!-- Used standard fa-twitter (bird) for guaranteed visibility -->
                             <i class="fa-brands fa-twitter text-xl text-white"></i>
                             <span data-i18n="shareTweet">Post</span>
@@ -85,7 +85,7 @@
             <span class="mt-auto text-gray-400 text-center bg-white/60 px-6 py-1 rounded-full backdrop-blur-xs font-bold shrink-0" data-i18n="acceptedInputTypes">
                 <i class="fa-solid fa-computer-mouse mr-1"></i>マウス / <i class="fa-solid fa-fingerprint mx-1"></i>指で描いてね
             </span>
-            <span class="header-button text-gray-500 active:scale-none" data-i18n="title::languageSelectorTooltip">
+            <span class="header-button text-gray-500 active:scale-none" title="言語を選択" data-i18n="title::languageSelectorTooltip">
                 <label for="language-selector" data-i18n="languageSelectorLabel" class="sr-only">言語：</label>
                 <select id="language-selector" disabled="true" required>
                     <option value="ja" selected>日本語</option>

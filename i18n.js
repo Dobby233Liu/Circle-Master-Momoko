@@ -3,23 +3,23 @@ import i18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 
 const i18nObserver = new MutationObserver(onI18nAttrChanged);
 const languageSelector = document.getElementById("language-selector");
-export function prepI18nLoad() {
+export function prepResourceLoad() {
     i18nObserver.disconnect();
     languageSelector.removeEventListener("change", onLanguageSelection);
     languageSelector.disabled = true;
 }
-prepI18nLoad();
+prepResourceLoad();
 
-export const I18N_PROP_KV_SPLITTER = "::";
-export const I18N_PROP_ENTRY_SPLITTER = ";;";
-function splitI18nProp(mainProp) {
+export const PROP_KV_SPLITTER = "::";
+export const PROP_ENTRY_SPLITTER = "%%";
+function splitProp(mainProp) {
     if (!mainProp) return;
     
-    const items = mainProp.split(I18N_PROP_ENTRY_SPLITTER);
+    const items = mainProp.split(PROP_ENTRY_SPLITTER);
     const map = new Map();
     for (const item of items) {
         if (item.length == 0) continue;
-        const itemSplit = item.split(I18N_PROP_KV_SPLITTER);
+        const itemSplit = item.split(PROP_KV_SPLITTER);
         const key = itemSplit.length > 1 ? itemSplit[0] : "innerHTML";
         if (key == "__proto__")
             continue;
@@ -29,11 +29,11 @@ function splitI18nProp(mainProp) {
 }
 
 function applyI18nToTextOf(elem) {
-    const keysByProp = splitI18nProp(elem.dataset.i18n);
+    const keysByProp = splitProp(elem.dataset.i18n);
     if (keysByProp?.size == 0) return;
     
-    const contextByProp = splitI18nProp(elem.dataset.i18nContext);
-    const interpolationByProp = splitI18nProp(elem.dataset.i18nInterpolationData);
+    const contextByProp = splitProp(elem.dataset.i18nContext);
+    const interpolationByProp = splitProp(elem.dataset.i18nInterpolationData);
     
     for (const [prop, key] of keysByProp) {
         if (!(prop in elem)) {
@@ -126,7 +126,7 @@ export function setTextLocalizable(elem, key, options) {
  * @param {import("i18next").InitOptions} o 
  * @returns {import("i18next").InitOptions}
  */
-function defineOptions(o) {
+function /*@__INLINE__*/ defineI18nextOptions(o) {
     return o;
 }
 
@@ -138,7 +138,7 @@ export async function initI18n(resources={}, options={}) {
     i18next.on("languageChanged", onLangChange);
     i18next.on("initialized", onI18nLoaded);
     i18next.on("loaded", onI18nLoaded);
-    await i18next.init(defineOptions({
+    await i18next.init(defineI18nextOptions({
         showSupportNotice: false,
         resources: resources,
         detection: {
