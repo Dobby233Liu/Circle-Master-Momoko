@@ -48,6 +48,7 @@ Then:
 - 2026-02-22 to 23: Pointer support improvement; added favicon, Open Graph tags
     and manifest; started hosting this under my github.io domain
 - 2026-02-24: Added building pipeline using Vite, modularize src
+- 2026-03-07+15: Improve i18n system
 
 ## ライセンス
 
