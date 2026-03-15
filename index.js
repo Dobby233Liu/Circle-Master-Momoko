@@ -226,6 +226,8 @@ function startDrawing(e) {
 function draw(e) {
     if (!isDrawing) return;
     if (currentPointer != e.pointerId) return;
+    if ((e.buttons & 1) == 0)
+        return endDrawing(e);
     
     const pos = CircleGamePoint.fromPointerEvent(e);
     points.push(pos);
@@ -233,9 +235,9 @@ function draw(e) {
     ctx.stroke();
 }
 
-function endDrawing(ev) {
+function endDrawing(e) {
     if (!isDrawing) return;
-    if (currentPointer != ev.pointerId) return;
+    if (currentPointer != e.pointerId) return;
     
     isDrawing = false;
     if (points.length < MIN_POINT_COUNT) return;
