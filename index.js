@@ -210,7 +210,6 @@ function startDrawing(e) {
     endStartDrawingDebounce();
     isDrawing = true;
     points = [];
-    resultOverlay.classList.remove('flex');
     resultOverlay.classList.remove('animate-fade-in-and-slide-up');
     resultOverlay.classList.add('hidden');
     clearCanvas();
@@ -371,7 +370,6 @@ function showResult(score, cx, cy, r) {
     messageDiv.className = `font-bold whitespace-normal break-words leading-tight text-lg md:text-xl ${colorClass}`;
     
     resultOverlay.classList.remove('hidden');
-    resultOverlay.classList.add('flex');
     resultOverlay.classList.add('animate-fade-in-and-slide-up');
 }
 
