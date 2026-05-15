@@ -116,6 +116,7 @@ function resizeCanvas() {
     canvas.style.width = `${canvasSize}px`;
     canvas.style.height = `${canvasSize}px`;
     if (I_PREFER_MY_STUPID_ANIMATION_OVER_CORRECTNESS) {
+        // we have to do this which kills the animation, but honestly it wasn't good anyways
         container.style.width = `${canvasSize}px`;
         container.style.height = `${canvasSize}px`;
     }
