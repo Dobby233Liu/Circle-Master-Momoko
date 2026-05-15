@@ -6,12 +6,8 @@ import { useHtmlPlugin as html, useHtmlCdnPlugin } from "@tomjs/vite-plugin-html
 export default defineConfig({
     appType: "spa",
     base: "./",
-    css: {
-        transformer: "lightningcss"
-    },
     build: {
         minify: "terser",
-        cssMinify: "lightningcss",
         modulePreload: false,
         rolldownOptions: {
             output: {
