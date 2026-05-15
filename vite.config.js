@@ -13,14 +13,13 @@ export default defineConfig({
         minify: "terser",
         cssMinify: "lightningcss",
         modulePreload: false,
-        rollupOptions: {
+        rolldownOptions: {
             output: {
-                compact: true,
                 exports: "none",
                 minifyInternalExports: true,
             },
             preserveEntrySignatures: false,
-            treeshake: "smallest"
+            treeshake: true
         },
         terserOptions: {
             toplevel: true,
